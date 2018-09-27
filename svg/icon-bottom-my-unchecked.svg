@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47 (45396) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-bottom-my-unchecked</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-598.000000, -1246.000000)">
+            <g id="Group-9-Copy-2" transform="translate(36.000000, 1200.000000)" font-size="24" font-family="PingFangSC-Regular, PingFang SC" line-spacing="36" fill="#808080" font-weight="normal">
+                <text id="中华民族的发祥地之一…">
+                    <tspan x="300" y="74">中华民族的发祥地之一…</tspan>
+                </text>
+            </g>
+            <g id="Group-11" transform="translate(0.000000, 1236.000000)">
+                <rect id="Rectangle" stroke="#CAC9CF" x="-0.5" y="-0.5" width="751" height="99"></rect>
+                <g id="底部菜单栏-copy" transform="translate(500.000000, 0.000000)" fill="#FFFFFF" fill-opacity="0.8">
+                    <g id="Group-4">
+                        <rect id="Background" x="0" y="0" width="250" height="98"></rect>
+                    </g>
+                </g>
+                <g id="Group-2-Copy-2" transform="translate(598.000000, 10.000000)" stroke-linecap="round" stroke="#424242" stroke-width="2" stroke-linejoin="round">
+                    <g id="Group-13">
+                        <g id="icon-bottom-my-unchecked" transform="translate(8.000000, 6.000000)">
+                            <path d="M25.8193,25.0422 L11.9173,25.0422 C5.3353,25.0422 0.0003,30.3772 0.0003,36.9582 L0.0003,38.9442 C0.0003,41.1392 1.7783,42.9172 3.9723,42.9172 L33.7633,42.9172 C35.9583,42.9172 37.7363,41.1392 37.7363,38.9442 L37.7363,36.9582 C37.7363,30.3772 32.4003,25.0422 25.8193,25.0422 Z" id="Stroke-1"></path>
+                            <path d="M17.875,22.2786 C23.515,22.2786 28.086,17.2916 28.086,11.1386 C28.086,4.9876 23.515,0.0006 17.875,0.0006 C12.235,0.0006 7.664,4.9876 7.664,11.1386 C7.664,17.2916 12.235,22.2786 17.875,22.2786 Z" id="Stroke-3"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
