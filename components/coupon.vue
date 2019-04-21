@@ -3,10 +3,10 @@
     <div class="coupon-image">
       <div class="money-num">
         <div>¥</div>
-        <div>50</div>
+        <div>{{couponsMoney}}</div>
       </div>
       <div class="coupon-info">
-        <div class="coupon-info-time">有限期：</div>
+        <div class="coupon-info-time">有限期：{{showTime()}}</div>
         <div class="coupon-info-application">使用范围仅限一课一游</div>
       </div>      
     </div>
@@ -16,9 +16,20 @@
 <script>
   export default {
     name: "coupon",
-    data(){
-      return {
-
+    props: {
+      beginTime: "",
+      endTime: "",
+      couponsMoney: "",
+      userCouponsId: "",
+      couponsId: "",
+      status: "",
+    },
+    methods: {
+      showTime(){
+        if(this.beginTime && this.endTime){
+          return _utils.timeStamp2date1(this.beginTime, "/") + "~" +
+            _utils.timeStamp2date1(this.endTime);
+        }
       }
     }
   }

@@ -1,19 +1,24 @@
 <template>
   <div>
+    <t-head 
+      :isShowBack=true
+      :headName="headName"
+    >
+    </t-head>
     <div v-if="step === 1">
       <div class="edit-student-info">
         <div>
           <div>姓名</div>
-          <div><input type="text" name="" placeholder="点击输入"></div>
+          <div><input type="text" name="" v-model="studentName" placeholder="点击输入"></div>
         </div>
         <div>
           <div>性别</div>
           <div class="edit-student-info-sex">
-            <div :class="isBoySelected" @click="selectSex('boy')">
+            <div :class="isBoySelected" @click="selectSex(0)">
               <div :class="editBoyClass"></div>
               <div>男生</div>
             </div>
-            <div :class="isGirlSelected" @click="selectSex('girl')">
+            <div :class="isGirlSelected" @click="selectSex(1)">
               <div :class="editGirlClass"></div>
               <div>女生</div>
             </div>
@@ -21,15 +26,15 @@
         </div>
         <div>
           <div>学校</div>
-          <div><input type="text" name=""  placeholder="点击输入"></div>
+          <div><input type="text" name="" v-model="studentSchool"  placeholder="点击输入"></div>
         </div>            
         <div>
           <div>年级</div>
-          <div><input type="text" name="" @click="showPick('grade')" readonly="true" placeholder="点击选择" v-model="grade"></div>
+          <div><input type="text" name="" @click="showPick('grade')" readonly="true" placeholder="点击选择" v-model="studentGrade"></div>
         </div>
         <div>
           <div>手机号</div>
-          <div><input type="tel" name="" placeholder="点击输入"></div>
+          <div><input type="tel" name="" v-model="studentPhone" placeholder="点击输入"></div>
         </div>           
       </div>
     </div>
@@ -37,15 +42,15 @@
       <div class="edit-student-info">
         <div>
           <div>年龄</div>
-          <div><input type="text" name="" placeholder="点击输入"></div>
+          <div><input type="text" name="" v-model="studentAge" placeholder="点击输入"></div>
         </div>
         <div>
           <div>身份证号码</div>
-          <div><input type="text" name="" placeholder="点击输入"></div>
+          <div><input type="text" name="" v-model="studentIdcard" placeholder="点击输入"></div>
         </div>            
         <div>
           <div>健康情况</div>
-          <div><input type="text" @click="showPick('health')" readonly="true" name="" placeholder="点击选择" v-model="health"></div>
+          <div><input type="text" @click="showPick('health')" readonly="true" name="" placeholder="点击选择" v-model="studentHealthStatus"></div>
         </div>
         <div id="health-detail">
           <div>健康详情</div>
@@ -57,27 +62,27 @@
       <div class="edit-student-info">
         <div>
           <div>监护人1姓名</div>
-          <div><input type="text" name="" placeholder="点击输入"></div>
+          <div><input type="text" name="" v-model="studentGuardian1" placeholder="点击输入"></div>
         </div>
         <div>
           <div>身份证号码</div>
-          <div><input type="text" name="" placeholder="点击输入"></div>
+          <div><input type="text" name="" v-model="studentIdcard1" placeholder="点击输入"></div>
         </div>            
         <div>
           <div>手机号码</div>
-          <div><input type="tel" name="" placeholder="点击输入"></div>
+          <div><input type="tel" name="" v-model="studentPhone1" placeholder="点击输入"></div>
         </div>
         <div>
           <div>监护人2姓名</div>
-          <div><input type="text" name="" placeholder="点击输入"></div>
+          <div><input type="text" name="" v-model="studentGuardian2" placeholder="点击输入"></div>
         </div> 
         <div>
           <div>身份证号码</div>
-          <div><input type="text" name="" placeholder="点击输入"></div>
+          <div><input type="text" name="" v-model="studentIdcard2" placeholder="点击输入"></div>
         </div> 
         <div>
           <div>手机号码</div>
-          <div><input type="tel" name="" placeholder="点击输入"></div>
+          <div><input type="tel" name="" v-model="studentPhone2" placeholder="点击输入"></div>
         </div>                           
       </div>
     </div>    
@@ -91,7 +96,7 @@
       :columns="1"
       :defaultData="defaultData"
       :selectData="pickData"
-      @concel="close"
+      @cancel="close"
       @confirm="confirmFn"
     ></vue-pickers>
   </div>
@@ -99,6 +104,9 @@
 
 <script>
   import vuePickers from 'vue-pickers'
+  import { GradeData, HealthData, HeadlthDataList } from '../utils/constant.js'
+  import { AddStudent, UpdateStudent } from '../utils/http.js'
+  import { setTimeout } from 'timers';
   export default {
     name: "editStudent",
     components: {
@@ -106,89 +114,60 @@
     },
     data(){
       return {
+        headName: "编辑学生信息",
         sex: "boy",
         step: 1,
         nextAllComplete: "下一步",
         langOrShort: "edit-student-step1",
-
         grade: "",
         health: "",
-
-        gradeData: [
-          {
-            text: "一年级",
-            value: 1
-          },
-          {
-            text: "二年级",
-            value: 1
-          },
-          {
-            text: "三年级",
-            value: 1
-          },                    
-          {
-            text: "四年级",
-            value: 1
-          },
-          {
-            text: "五年级",
-            value: 1
-          },
-          {
-            text: "六年级",
-            value: 1
-          },
-          {
-            text: "初中一年级",
-            value: 1
-          },
-          {
-            text: "初中二年级",
-            value: 1
-          },
-          {
-            text: "初中三年级",
-            value: 1
-          },
-          {
-            text: "高中一年级",
-            value: 1
-          },     
-          {
-            text: "高中二年级",
-            value: 1
-          }, 
-          {
-            text: "高中三年级",
-            value: 1
-          },    
-        ],
-        healthData: [
-          {
-            text: "健康",
-            value: 1
-          },  
-          {
-            text: "良好",
-            value: 1
-          },         
-          {
-            text: "一般",
-            value: 1
-          }                
-        ],
+        gradeData: GradeData,
+        healthData: HealthData,
         defaultData: [], 
         pickShow: false,
         pickType: "grade",
         pickData: {
           data1: []
-        }
+        },
+        studentName: "",
+        studentAge: "",
+        studentBirth: "",
+        studentCreater: "",
+        studentGrade: "",
+        studentGuardian1: "",
+        studentGuardian2: "",
+        studentHeader: "",
+        studentHealthStatus: "",
+        studentHealthInfo: "",
+        studentIdcard: "",
+        studentIdcard1: "",
+        studentIdcard2: "",
+        studentPhone: "",
+        studentPhone1: "",
+        studentPhone2: "",
+        studentRegion: "",
+        studentSchool: "",
+        studentSex: 0,
+        studentId: "",
+        type: "add"
       } 
+    },
+    mounted(){
+      this.type = this.$route.params.type;
+      // 如果是编辑模式，则赋予初始值
+      let studentTmp = this.$store.state.student.editStudent;
+      if(this.type !== "add" && studentTmp){
+        for( let prop in studentTmp){
+          if(this.hasOwnProperty(prop)){
+            this[prop] = studentTmp[prop];
+          }
+        }
+        this.studentHealthStatus = HeadlthDataList[this.studentHealthStatus];
+      }
     },
     methods: {
       selectSex(sex){
-        this.sex = sex;
+        this.studentSex = sex;
       },
       upStep(){
         if(this.step > 1){
@@ -196,17 +175,163 @@
         }
       },
       nextStep(){
+        if(!this["validate" + this.step]()){
+          return ;
+        };
         if(this.step === 3){
-          // 请求数据
+          this.sentRequest();
         }else{
           this.step++;  
         }
+      },
+
+      // 校验第一步的数据
+      validate1(){
+        let data = [
+          {
+            name: "姓名",
+            value: this.studentName,
+            type: "Empty"
+          },{
+            name: "学校",
+            value: this.studentSchool,
+            type: "Empty"
+          },{
+            name: "年级",
+            value: this.studentGrade,
+            type: "Empty"
+          },{
+            name: "手机号码",
+            value: this.studentPhone,
+            type: "Phone"
+          },
+        ];
+        return _utils.validate(data);
+      },
+
+      // 校验第二步的数据
+      validate2(){
+        let data = [
+          {
+            name: "年龄",
+            value: this.studentAge,
+            type: "Empty"
+          },{
+            name: "身份证号码",
+            value: this.studentIdcard,
+            type: "IdCard"
+          },{
+            name: "健康情况",
+            value: this.studentHealthStatus,
+            type: "Empty"
+          },
+        ];
+        return _utils.validate(data);
+      },
+
+      // 校验第三步的数据
+      validate3(){
+        let data = [
+          {
+            name: "监护人1姓名",
+            value: this.studentGuardian1,
+            type: "Empty"
+          },{
+            name: "监护人1身份证",
+            value: this.studentIdcard1,
+            type: "IdCard"
+          },{
+            name: "监护人1手机号",
+            value: this.studentPhone1,
+            type: "Phone"
+          },{
+            name: "监护人2姓名",
+            value: this.studentGuardian2,
+            type: "Empty"
+          },{
+            name: "监护人2身份证",
+            value: this.studentIdcard2,
+            type: "IdCard"
+          },{
+            name: "监护人2手机号",
+            value: this.studentPhone2,
+            type: "Phone"
+          },
+        ];
+        return _utils.validate(data);
+      },
+
+      sentRequest(){
+        let me = this;
+        let data = {
+          studentName: this.studentName,
+          studentAge: this.studentAge,
+          studentBirth: this.studentBirth,
+          studentCreater: this.studentCreater,
+          studentGrade: this.studentGrade,
+          studentGuardian1: this.studentGuardian1,
+          studentGuardian2: this.studentGuardian2,
+          studentHeader: this.studentHeader,
+          studentHealthStatus: HeadlthDataList.indexOf(this.studentHealthStatus),
+          studentHealthInfo: this.studentHealthInfo,
+          studentIdcard: this.studentIdcard,
+          studentIdcard1: this.studentIdcard1,
+          studentIdcard2: this.studentIdcard2,
+          studentPhone: this.studentPhone,
+          studentPhone1: this.studentPhone1,
+          studentPhone2: this.studentPhone2,
+          studentRegion: this.studentRegion,
+          studentSchool: this.studentSchool,
+          studentSex: this.studentSex,
+          studentId: this.studentId,
+          userId: this.$store.state.mine.userId
+        }
+
+        if(this.type === "add"){
+          this.addStudent(data);
+        }else{
+          this.updateStudent(data);
+        }
+
+      },
+
+      addStudent(data){
+        let me = this;
+        AddStudent(_utils.changeParamNames(data, "FTE")).then(data => {
+          if(data.code === 200){
+            _showTip("添加成功");
+            setTimeout(() => {
+              me.$router.go(-1);
+            },500)
+          }
+        }).catch(data => {
+
+        })
+      },
+
+      updateStudent(data){
+        let me = this;
+        UpdateStudent(_utils.changeParamNames(data, "FTE")).then(data => {
+          if(data.code === 200){
+            this.updateCatchinfo(data);
+            _showTip("修改成功");
+            setTimeout( () => {
+              me.$router.go(-1);
+            },500)
+          }
+        }).catch( data => {
+
+        })
+      },
+      updateCatchinfo(data){
+        this.$store.commit("updateStudentInfo", data);
       },
       showPick(pickType){
         this.pickShow = true;
         this.pickType = pickType;
         this.pickData.data1 = pickType === "grade" ? this.gradeData:this.healthData;
       },
+      // picker的两个回调
       close(){
         this.pickShow = false;
       },
@@ -214,25 +339,24 @@
         this.pickShow = false;
         let dataValue = value.select1.text;
         if(this.pickType === "grade"){
-          this.grade = dataValue;
+          this.studentGrade = dataValue;
         }else{
-          this.health = dataValue;
+          this.studentHealthStatus = dataValue;
         }
-        console.log(this.grade, this.health);
       }
     },
     computed: {
       editBoyClass(){
-        return this.sex === "boy" ? "edit-sex-boy-selected":".edit-sex-boy"
+        return this.studentSex != 1 ? "edit-sex-boy-selected":".edit-sex-boy"
       },
       editGirlClass(){
-        return this.sex === "boy" ? "edit-sex-girl":"edit-sex-girl-selected";
+        return this.studentSex != 1 ? "edit-sex-girl":"edit-sex-girl-selected";
       },
       isBoySelected(){
-        return this.sex === "boy" ? "sex-selected":"sex-unselected";
+        return this.studentSex != 1 ? "sex-selected":"sex-unselected";
       },
       isGirlSelected(){
-        return this.sex === "boy" ? "sex-unselected":"sex-selected";
+        return this.studentSex != 1 ? "sex-unselected":"sex-selected";
       }      
     },
     watch: {

@@ -3,16 +3,19 @@
     <div class="mine-head-container">
       <div class="mine-head-img-container">
         <div>
-          <img src="../assets/image/tmp/head2.jpg">
+          <img :src="userHead">
         </div>
-        <span>唐悠悠</span>
+        <div>
+          <span>{{userName || "姓名"}}</span>
+          <div class="icon-student-management-modification-white" @click="pageTo('mineEditInfo')"></div>
+        </div>
       </div>
       <div class="mine-head-info">
         <div>
-          <div>{{integration}}</div>
+          <div>{{score}}</div>
           <div><div class="integration-icon"></div>积分</div>
         </div>  
-        <div>
+        <div @click="pageTo('coupon')">
           <div>{{coupon}}</div>
           <div><div class="coupon-icon"></div>优惠券</div>
         </div>  
@@ -26,7 +29,7 @@
       </div>
     </div>
     <div class="mine-info-list">
-      <div @click="pageTo('')" class="mine-type-item">
+      <div @click="pageTo('honors')" class="mine-type-item">
         <div class="mine-type-icon mine-type-my-honor-icon"></div>
         <div class="mine-type-text">荣誉证书</div>
         <div class="mine-type-right">></div> 
@@ -40,27 +43,45 @@
       </div>
     </div>
     <div class="mine-info-list">
-      <div @click="pageTo('')" class="mine-type-item">
+      <div @click="pageTo('about')" class="mine-type-item">
         <div class="mine-type-icon mine-type-my-about-icon"></div>
         <div class="mine-type-text">关于</div>
-        <div class="mine-type-right">></div> 
+        <div class="mine-type-right">></div>
       </div>
     </div>            
   </div>
 </template>
 
 <script>
+  import { UserDefaultHeadImg } from '../utils/constant.js'
   export default {
     name: "mine",
     data(){
       return {
-        integration: 1000,
-        coupon: 8
+
       }
     },
     methods: {
       pageTo(to){
+        if(to == "mineSetting") {
+          _showTip("暂不支持修改");
+          return ;
+        }
         this.$router.push({path: "/mine/" + to});
+      }
+    },
+    computed: {
+      userName(){
+        return this.$store.state.mine.userName;
+      },
+      score(){
+        return this.$store.state.mine.userScore;
+      },
+      userHead(){
+        return this.$store.state.mine.userHead || UserDefaultHeadImg;
+      },
+      coupon(){
+        return this.$store.getters.couponsNum;
       }
     }
   }
@@ -71,6 +92,8 @@
   @import '../utils/mixin.styl'
   head-icon-size = 0.293333rem
   mine-type-size = 0.72rem
+  mine-modification-width = 0.32rem
+  mine-modification-height = 0.333333rem
   
   .brand
     background-repeat: no-repeat
@@ -91,7 +114,7 @@
       text-align: center
       border-top: 1px solid transparent;
       margin-bottom: 0.533333rem
-      >div
+      >div:nth-child(1)
         width: 1.333333rem
         height: 1.333333rem
         border: 0.026667rem solid white
@@ -102,12 +125,25 @@
           width: 1.333333rem
           height: 1.333333rem          
           border-radius: 50%
+      >div:nth-child(2)
+        line-height: 14px
+        position: relative
+        span
+          font-size: 14px
+          font-weight: bolder
+          color: #333333
           
-      span
-        font-size: 14px
-        font-weight: bolder
-        color: #333333
-    
+        .icon-student-management-modification-white
+          display: inline-block
+          position: absolute
+          margin-left: 0.226667rem
+          @extends .brand
+          width: mine-modification-width
+          height: mine-modification-height
+          background-size: mine-modification-width mine-modification-height
+          bg-image('../assets/image/icon/icon-student-management-modification-white')
+            
+        
     .mine-head-info
       display: flex
       justify-content: space-around

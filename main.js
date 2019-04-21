@@ -16,18 +16,26 @@ import 'lib-flexible'
 
 import Icon from 'vue-svg-icon/Icon.vue'
 Vue.component('icon', Icon)
-
-import router from './utils/routerEntry.js'
+import tHead from './components/head.vue'
+Vue.component('tHead', tHead)
 
 import store from './store/index.js'
 
-Vue.config.productionTip = false
+import router from './utils/routerEntry.js'
+
+
+Vue.config.productionTip = false;
+// 定义全局组件
+Vue.use(tHead);
 
 /* eslint-disable no-new */
-new Vue({
+window.vm = new Vue({
   el: '#app',
   store,
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  mounted(){
+    _utils.getUserInfo.call(this);
+  }
 })

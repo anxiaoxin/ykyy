@@ -22,31 +22,31 @@
     <div v-if="isShowBody" class="student-list-body">
       <div>
         <div>学校</div>
-        <div>天津大学</div>
+        <div>{{studentSchool}}</div>
       </div>
       <div>
         <div>年龄</div>
-        <div>25</div>
+        <div>{{studentAge}}</div>
       </div>
       <div>
         <div>手机号</div>
-        <div>15620560515</div>
+        <div>{{studentPhone}}</div>
       </div>
       <div>
         <div>健康状态</div>
-        <div>良好</div>
+        <div>{{studentHealthStatus}}</div>
       </div>
       <div>
         <div>健康详情</div>
-        <div>良好</div>
+        <div>{{studentHealthInfo}}</div>
       </div>
       <div>
         <div>监护人1</div>
-        <div>爸爸</div>
+        <div>{{studentGuardian1}}</div>
       </div>                              
       <div>
         <div>监护人2</div>
-        <div>妈妈</div>
+        <div>{{studentGuardian2}}</div>
       </div>       
     </div>
   </div>
@@ -55,17 +55,30 @@
 <script>
   export default {
     name: "studentList",
+    props: {
+      studentName: "",
+      studentAge: "",  
+      studentGrade: "", 
+      studentGuardian1: "", 
+      studentGuardian2: "", 
+      studentHeader: "", 
+      studentHealthStatus: "", 
+      studentHealthInfo: "", 
+      studentPhone: "", 
+      studentSchool: "", 
+      studentSex: "",
+      studentImage: "",
+      studentId: "",
+      index: ""
+    },
     data(){
       return {
-        studentName: "唐逗逗",
-        studentSex: "boy",
-        studentImage: "",
         isShowBody: false
       }
     },
     methods: {
       editStudent() {
-        this.$router.push({path: "/mine/studentInfo/edit"});
+        this.$emit("editStudent", this.index);
       },
       toggleBody() {
         this.isShowBody = !this.isShowBody;
@@ -73,7 +86,7 @@
      },
     computed: {
       sexClass() {
-        return this.studentSex === "boy" ? "boy" : "girl";
+        return this.studentSex === 0 ? "boy" : "girl";
       },
       editClass() {
         return this.isShowBody ? "up" : "down";

@@ -27,5 +27,6 @@ export default {
   ErrorPassWord,
   UnSamePassWords,
   RegistSuccess,
-  ErrorSystem
+  ErrorSystem,
+  ErrorIdCard
 }

@@ -4,14 +4,14 @@
     </div> 
     <div>
       <div class="input-container">
-        <input class="login-button-base input" type="number" v-model="phoneNum" name="" placeholder="手机号">
+        <input class="login-button-base input" type="number" @focus="changeFootClass(true)" @blur="changeFootClass(false)" v-model="phoneNum" name="" placeholder="手机号">
         <div class="icon">
           <div class="phone-img"></div>
           <div class="vertical-line"></div>
         </div>
       </div>
       <div class="input-container">
-        <input class="login-button-base input" type="password" v-model="password" name="" placeholder="密码">
+        <input class="login-button-base input" type="password" @focus="changeFootClass(true)" @blur="changeFootClass(false)" v-model="password" name="" placeholder="密码">
         <div class="icon">
           <div class="pass-img"></div>
           <div class="vertical-line"></div>
@@ -19,26 +19,49 @@
         <div class="forget-pass" @click="register('forgetPass')">忘记密码？</div>
       </div>
       <div>
-        <button class="login-button-base login">登陆</button>
+        <button class="login-button-base login" @click="login">登陆</button>
       </div>
     </div>
-    <div class="register" @click="register('register')">
-      <span>立即注册</span>
+    <div class="register">
+      <span @click="register('register')">立即注册</span>
+      <span @click="loginByWechat">微信登陆</span>
     </div>
-    <div class="login-foot">
+    <div class="login-foot" :class="loginStatic">
     </div>
   </div>
 </template>
 
 <script>
   
-  import { Login } from '../utils/http.js'
+  import { Login, LoginByWechat } from '../utils/http.js'
 
 	export default {
     data(){
       return {
         phoneNum: "",
-        password: ""
+        password: "",
+        loginStatic: ""
+      }
+    },
+    mounted(){
+      // 页面加载时判断是否为微信登陆url
+      let code = _utils.getUrlParam("code");
+      let me = this;
+      if(code){
+        LoginByWechat({"code": code}).then(res => {
+            if(res.code === 200){
+              _utils.setCookie("uuid",res.result.user_uuid);
+              _utils.setCookie("userId",res.result.user_id);
+              let userCache = _utils.changeParamNames(res.result, "ETF");
+              _utils.setUserCache.call(me, userCache);
+              me.$router.replace({path: "/main/mine"});
+            }else{
+              //  提示失败原因
+              _showTip(res.message); 
+            }         
+      }).catch(data => {
+  
+        })
       }
     },
     methods: {
@@ -62,14 +85,20 @@
           password: this.password
         };
         if(this.validateData()){
+          let me = this;
           Login(params).then((res) =>{
             // 登录成功
             if(res.code === 200){
               _utils.setCookie("uuid",res.result.userBean.user_uuid);
-              this.$router.replace({path: "/main/mine"});
+              _utils.setCookie("userId",res.result.userBean.user_id);
+              let userCache = _utils.changeParamNames(res.result.userBean, "ETF");
+              userCache.accessKey = res.result.accessKey;
+              userCache.securityKey = res.result.securityKey;
+              _utils.setUserCache.call(me, userCache);
+              me.$router.replace({path: "/main/mine"});
             }else{
               //  提示失败原因
-              _showTip(res.result);
+              _showTip(res.message);
             }
           }).catch(function(){
 
@@ -79,6 +108,22 @@
       register(type){
         // 坑，使用此方法必须使用name，否则params无效
         this.$router.push({name: "register",params:{id: type}});
+      },
+      loginByWechat(){
+        let appId = "wx9411cfeabd1b8396";
+        let code = _utils.getUrlParam("code");
+        let local = window.location.href;
+        if(!code){
+          window.location.href = 
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + 
+          "&redirect_uri=" + encodeURIComponent(local) + 
+          "&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+        }
+      },
+      changeFootClass(isStatic) {
+        let className = "login-foot-static";
+        isStatic || (className = "");
+        this.loginStatic = className;
       }
     }
 
@@ -174,6 +219,8 @@
     margin-top: 0.666667rem
     color: #333333
     text-align: center
+    display: flex;
+    justify-content: space-around 
     
   .login-foot
     position: fixed
@@ -187,5 +234,7 @@
     height: 4.0rem
     bg-image('../assets/image/background/image-log-in-background')
     
-    
+  .login-foot-static
+    position: static !important
+    margin-top: 2.6rem
 </style>

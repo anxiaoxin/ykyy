@@ -98,7 +98,7 @@
 
 <script>
 
-  import { Register } from '../utils/http.js'
+  import { Register, ChangePass } from '../utils/http.js'
 
 	export default {
     name: 'register',
@@ -180,11 +180,11 @@
               {
                 name: "密码",
                 value: this.password,
-                type: PassWord
+                type: "PassWord"
               },{
                 name:"确认密码",
                 value: this.passwordTmp,
-                type: PassWord
+                type: "PassWord"
               }
             ],
             type: "TwoPassWord"
@@ -208,7 +208,7 @@
             _utils.showRegisterSuccess();
             this.$router.replace({path: "/login"})
           }).catch((data) => {
-            console.log(2, data);
+            
           })  
         }
       },
@@ -217,10 +217,23 @@
       changePass(){
         if(this.validateChangepassParam()){
           let params = {
-            password: this.password,
-            newPassword: this.newPassword
+            oldpass: this.password,
+            newpass: this.newPassword,
+            user_id: this.$store.state.mine.userId
           }
           // 进行http请求
+          ChangePass(params).then(data => {
+            if(data.code === 200){
+              _showTip("修改成功");
+              setTimeout(() => {
+                this.$router.go(-1);
+              }, 500);
+            }else if(data.code === 404){
+              _showTip("密码不正确");
+            }
+          }).catch(data => {
+
+          })
         }
       },
 
@@ -238,11 +251,11 @@
               {
                 name: "新密码",
                 value: this.newPassword,
-                type: PassWord
+                type: "PassWord"
               },{
                 name:"确认密码",
                 value: this.newPasswordTmp,
-                type: PassWord
+                type: "PassWord"
               }
             ],
             type: "TwoPassWord"

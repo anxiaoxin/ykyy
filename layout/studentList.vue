@@ -1,26 +1,35 @@
 <template>
-  <div class="student-list-container">
-    <div class="student-list-item-box">
-      <student-list-item>
-      </student-list-item>
-    </div>
-    <div class="student-list-item-box">
-      <student-list-item >
-      </student-list-item>
-    </div>
-    <div class="student-list-item-box">
-      <student-list-item >
-      </student-list-item>
-    </div>
-
-    <div class="student-list-item-box">
-      <student-list-item >
-      </student-list-item>
-    </div>        
-    <div class="add-student">
-      <div @click="pageTo()">
-        <div class="add-icon"></div>
-        <div class="add-student-text">添加学生</div>
+  <div>    
+    <t-head 
+      :isShowBack=true
+      :headName="headName"
+    >
+    </t-head>
+    <div class="student-list-container">
+      <div class="student-list-item-box" v-for="(student, key) in studentsInfo" v-bind:key="key">
+        <student-list-item @editStudent="editStudent"
+          :studentName="student.studentName"      
+          :studentAge="student.studentAge" 
+          :studentGrade="student.studentGrade"
+          :studentGuardian1="student.studentGuardian1"
+          :studentGuardian2="student.studentGuardian2"
+          :studentHeader="student.studentHeader"
+          :studentHealthStatus="student.studentHealthStatus"
+          :studentHealthInfo="student.studentHealthInfo"
+          :studentPhone="student.studentPhone"
+          :studentSchool="student.studentSchool"
+          :studentSex="student.studentSex"      
+          :studentImage="student.studentImage"
+          :studentId="student.studentId"
+          :index="key"    
+        >
+        </student-list-item>
+      </div>      
+      <div class="add-student">
+        <div @click="addStudent()">
+          <div class="add-icon"></div>
+          <div class="add-student-text">添加学生</div>
+        </div>
       </div>
     </div>
   </div>
@@ -28,6 +37,7 @@
 
 <script>
   import StudentListItem from '../components/studentListItem'
+  import { GetStudentsByUserId } from '../utils/http.js'
   export default {
     name: "",
     components: {
@@ -35,16 +45,28 @@
     },
     data(){
       return {
-        studentsInfo: [
-          {
-
-          }
-        ]
+        headName: "学生管理"
+      }
+    },
+    mounted(){
+      // 如果缓存中的students对象被销毁或值为空，则进行请求
+      let studentsCache = this.$store.state.student.students;
+      if(!studentsCache || studentsCache.length === 0) {
+        _utils.getAndCatchStudents.call(this);
       }
     },
     methods: {
-      pageTo(){
-        this.$router.push({path: "/mine/studentInfo/edit"});
+      addStudent(){
+        this.$router.push({name: "studentInfoEdit", params:{type: "add"}});
+      },
+      editStudent(index){
+        this.$store.commit("setEditStudent", this.studentsInfo[index]);
+        this.$router.push({name: "studentInfoEdit", params:{type: "edit"}});
+      }
+    },
+    computed: {
+      studentsInfo() {
+        return this.$store.state.student.students;
       }
     }
   }

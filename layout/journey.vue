@@ -9,28 +9,30 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="product-list-container">
-                <div v-for="product in myJourneyProductData">
-                  <list-item @click="routeToDetail(product.id)" 
-                    :type="product.type"
-                    :imgUrl="product.imgUrl"
-                    :title="product.title"
-                    :category="product.category"
-                    :orderTime="product.orderTime"
-                    :journeyState="product.journeyState"
+                <div v-for="(product, key) in myJourneyProductData" @click="routeToDetail(product)" v-bind:key="key">
+                  <list-item 
+                    :type="'myJourney'"
+                    :imgUrl="product.productInfoBean.productBean.productImage"
+                    :title="product.productInfoBean.productBean.productName"
+                    :category="product.productInfoBean.productBean.productType"
+                    :orderTime="product.productInfoBean.product_info_time"
+                    :journeyState="product.purchase_status"
+                    :pageBySelf='false'
                    ></list-item>        
                 </div>
               </div>
             </div>
             <div class="swiper-slide">
               <div class="product-list-container">
-                <div v-for="product in planJourneyProductData">
-                  <list-item @click="routeToDetail(product.id)" 
-                    :type="product.type"
-                    :imgUrl="product.imgUrl"
-                    :title="product.title"
-                    :category="product.category"
-                    :orderTime="product.orderTime"
-                    :orderPrice="product.orderPrice"
+                <div v-for="(product, key) in planJourneyProductData" @click="routeToDetail(product)" v-bind:key="key">
+                  <list-item  
+                    :type="'planJourney'"
+                    :imgUrl="product.productInfoBean.productBean.productImage"
+                    :title="product.productInfoBean.productBean.productName"
+                    :category="product.productInfoBean.productBean.productType"
+                    :orderTime="product.productInfoBean.product_info_time"
+                    :orderPrice="product.purchase_money"
+                    :pageBySelf="false"
                    ></list-item>        
                 </div>
               </div>
@@ -44,6 +46,7 @@
 <script>
   import Swiper from 'swiper'
   import ListItem from '../components/productList'
+  import { GetUserPurchaseByUserId } from '../utils/http.js'
 
   export default {
     name: "journey",
@@ -56,33 +59,10 @@
         activeTab: 0,
         myJourneyTabClass: 'tab-active',
         panJourneyTabClass: 'tab-unactive',
-
-        myJourneyProductData: [
-          {
-            type: "myJourney" ,
-            imgUrl: "",
-            title: "北京-六朝古都",
-            orderTime: "2018-07-24",
-            journeyState: "进行中",
-            category: "史诗文画",         
-          },                                                                            
-        ],
-
-        planJourneyProductData: [
-          {
-            type: "planJourney" ,
-            imgUrl: "",
-            title: "北京-六朝古都",
-            orderTime: "2018-07-24",
-            orderPrice: "2280",
-            category: "史诗文画",          
-          },                
-        ],
       }
     },
     watch: {
       activeTab(){
-        console.log(this.activeTab);
         if(this.activeTab === 0){
           this.myJourneyTabClass = 'tab-active';
           this.panJourneyTabClass = 'tab-unactive';
@@ -93,28 +73,49 @@
       }
     },
     mounted(){
-      var me = this;
+      let me = this;
       this.mySwiper = new Swiper('.swiper-container',{
         centeredSlides: true,
         observer: true,
         observeParents: true,
         on: {
           slideChangeTransitionEnd: function(){
-            console.log(this.activeIndex);
             me.activeTab = this.activeIndex;
           }
         }        
       })
+      let user_id = _utils.getCookie("userId"); 
+      if(!user_id) {
+        return ;
+      }
+      // 获取数据
+      if(this.$store.state.purchaseProduct.unPayPurchase.length || this.$store.state.purchaseProduct.purchaseState.length) {
+        return ;
+      }
+      let params = {
+        user_id: user_id,
+        page: 1
+      }
+      _utils.getAndCacheUserPurchase.call(this, params);
     },
     methods: {
       slideTo(to){
         this.mySwiper.slideTo(to, 500, false);
         this.activeTab = to;
       },
-
-      routeToDetail(){
-        
+      routeToDetail(product){
+        this.$store.commit("cacheProductSelected", product);
+        this.$router.push({name: "journeyDetail",params: {id: product.purchase_id}})
       }      
+    },
+    computed: {
+      myJourneyProductData() {
+        return this.$store.state.purchaseProduct.purchaseState;
+      },
+      planJourneyProductData() {
+        console.log(this.$store.state.purchaseProduct.unPayPurchase);
+        return this.$store.state.purchaseProduct.unPayPurchase;
+      }
     }
   }
 </script>
@@ -140,7 +141,7 @@
       font-weight: bold
   .journey-content      
     position: fixed
-    top: 1.066667rem
+    top: 2.24rem
     bottom: 0
     overview-y: scroll
     > div

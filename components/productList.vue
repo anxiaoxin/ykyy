@@ -1,7 +1,7 @@
 <template>
   <div class="product-item-container" @click="toDetail">
       <div class="product-left">
-        <img src="../assets/image/tmp/bj.png">
+        <img :src="imgUrl">
       </div>
       <div class="product-right">
           <div class="title">{{title}}</div>
@@ -43,23 +43,37 @@
       },
       title: String,
       abstract: String,
-      orderTime: String,
-      journeyState: String,
+      orderTime: Number,
+      journeyState: Number,
       category: String,
       orderState: String, 
-      orderPrice: String,
-      productID: Number,
+      orderPrice: Number,
+      productId: Number,
       productType: {
         type: String,
         default: "history"
-      }
+      },
+      pageBySelf: {
+        type: Boolean,
+        default: true
+      },
+      productInfo: {
+        type: Object,
+        default: function() {
+          return {};
+        }
+      }      
     },
     mounted(){
       
     },
     methods: {
       toDetail(){
-        this.$router.push({name: '',params: {id: this.productID}});
+        if(!this.pageBySelf) {
+          return ;
+        }
+        this.$store.commit("cacheProductSelected", this.productInfo);
+        this.$router.push({name: 'productInfo',params: {id: this.productId}});
       }
     } 
   }
@@ -74,6 +88,7 @@ secondInfoBottom = 0.466667rem
     height: 2.933333rem
     padding: 0.44rem 0.506667rem
     box-sizing: border-box
+    display : flex
     .product-left
       float: left
       img

@@ -1,12 +1,25 @@
 
-const domain = "http://www.yikeyiyou.com:8088"
-
 const Urls = {
-  bindPhone: domain + "/user/bindPhone",
-  register: domain +  "/user/register",
-  login: domain + "/login",
-  changePass: domain + "/user/changePass",
-  changePhone: domain + "/user/changePhone",
+  bindPhone: "/user/bindPhone",
+  register:  "/user/register",
+  login: "/user/loginByPhone",
+  changePass: "/user/changePass",
+  changePhone: "/user/changePhone",
+  updateUser: "/user/updateUserBean",
+  addStudent: "/student/addStudent",
+  getUserInfo: "/user/getUserBeanById",
+  getHomePageProduct: "/product/getProductByIsIndex",
+  getProductByType: "/product/getProductByType",
+  getStudentsByUserID: "/student/getStudentByUserId",
+  updateStudent: "/student/updateStudent",
+  loginByWechat: "/wx/loginByWx",
+  getUserCoupons: "/coupons/getUserCouponsByUserId",
+  getUserPurchaseByUserId: "/purchase/getPurchaseListByUserId",
+  getProductById: "/product/getProductById",
+  addPurchase: "/purchase/addPurchase",
+  getProductInfoById: "/productinfo/getProductInfoById",
+  getProductInfoByProductId: "/productinfo/getProuctInfoByProductId",
+  pay: "/wx/pay"
 }
 
 export default Urls;

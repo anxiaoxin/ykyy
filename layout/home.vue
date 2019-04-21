@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="showPage">
     <div class="home-head-imag">
       <img src="../assets/image/tmp/mainhead.png">
     </div>
@@ -7,7 +7,7 @@
       <div>
         <div @click="changeView('history')">
           <div class="category-img category-history"></div>
-          <div class="label">史诗文化</div> 
+          <div class="label">史诗文画</div> 
         </div>
         <div @click="changeView('science')">
             <div class="category-img category-science"></div>
@@ -23,18 +23,15 @@
       推荐行程
     </div>
     <div class="product-list-container">
-      <div v-for="product in productData">
-        <list-item @click="routeToDetail(product.id)" 
+      <div v-for="(product, key) in productData" v-bind:key="key">
+        <list-item @click="routeToDetail(product.productId)"
           :type="product.type"
-          :imgUrl="product.imgUrl"
-          :title="product.title"
-          :abstract="product.abstract"
-          :category="product.category"
-
-          :orderTime="product.orderTime"
-          :journeyState="product.journeyState"
-
-          :orderPrice="product.orderPrice"
+          :imgUrl="product.productImage"
+          :title="product.productName"
+          :abstract="product.productIntroduction"
+          :category="product.productType"
+          :productId="product.productId"
+          :productInfo="product"
          ></list-item>        
       </div>
     </div>
@@ -43,6 +40,8 @@
 
 <script>
   import ListItem from '../components/productList'
+  import { GetHomePageProduct, LoginByWechat } from '../utils/http.js'
+  import { ProductType, HomePageHeadName } from '../utils/constant.js'
   export default {
     name: "home",
     components: {
@@ -50,57 +49,71 @@
     },    
     data(){
       return {
-        productData: [{
-          type: "product" ,
-          imgUrl: "",
-          title: "北京-六朝古都",
-          abstract: "早在七十万年前，北京周asdfasdadf",
-          category: "史诗文画",         
-        },
-        {
-          type: "myJourney" ,
-          imgUrl: "",
-          title: "北京-六朝古都",
-          orderTime: "2018-07-24",
-          journeyState: "进行中",
-          category: "史诗文画",         
-        },
-        {
-          type: "planJourney" ,
-          imgUrl: "",
-          title: "北京-六朝古都",
-          orderTime: "2018-07-24",
-          orderPrice: "2280",
-          category: "史诗文画",         
-        },        
-        {
-          type: "myJourney" ,
-          imgUrl: "",
-          title: "北京-六朝古都",
-          orderTime: "2018-07-24",
-          journeyState: "进行中",
-          category: "史诗文画",         
-        },
-        {
-          type: "myJourney" ,
-          imgUrl: "",
-          title: "北京-六朝古都",
-          orderTime: "2018-07-24",
-          journeyState: "进行中",
-          category: "史诗文画",         
-        }                
-        ]
+        showPage: false
       }
     },
+    mounted(){
+      // 微信登录逻辑
+      
+      this.login();
+      let me = this;
+      if(this.$store.state.typeProduct.homepage.length === 0)  {
+        _utils.getAndCacheHomeProductList.call(this);
+      }      
+    },    
     methods: {
-      changeView(to){
-        this.$router.push({path: "/product/" + to});
+      changeView(type){
+        this.$router.push({name: "product", params:{id: type}});
       },
       // 根据id跳到产品详情页面
       routeToDetail(id){
 
+      },
+      login() {
+        if(!_utils.getCookie('uuid')) {
+          // 登录操作
+          let code = _utils.getUrlParam("code");
+          // 如果没有code则进行用户授权
+          if( !code ) {
+            this.loginByWechat();
+          }else {
+            LoginByWechat({"code": code}).then(res => {
+                if(res.code === 200){
+                  this.showPage = true;
+                  _utils.setCookie("uuid",res.result.user_uuid);
+                  _utils.setCookie("userId",res.result.user_id);
+                  let userCache = _utils.changeParamNames(res.result, "ETF");
+                  _utils.setUserCache.call(me, userCache);
+                }else{
+                  //  提示失败原因
+                  _showTip(res.message); 
+                }         
+          }).catch(data => {
+      
+          })
+          }
+        }else {
+          // 当前已经有用户数据，则显示
+          this.showPage = true;
+        }        
+      },
+      loginByWechat(){
+        let appId = "wx9411cfeabd1b8396";
+        let code = _utils.getUrlParam("code");
+        let local = window.location.href;
+        if(!code){
+          window.location.href = 
+          "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId + 
+          "&redirect_uri=" + encodeURIComponent(local) + 
+          "&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+        }
+      },      
+    },
+    computed: {
+      productData() {
+        return this.$store.state.typeProduct.homepage;
       }
-    }
+    }    
   }
 </script>
 

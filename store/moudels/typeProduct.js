@@ -5,6 +5,9 @@ const state = {
   history: [],
   science: [],
   grow: [],
+  homepage: [],
+  // 当前选中的
+  selected: {}
 }
 
 // 等同于计算属性，该对象定义的属性是通过state
@@ -16,9 +19,22 @@ const getters = {}
 // 第一个参数固定为state对象，第二个是触发时传入的参数
 // 使用store.commit(方法名,参数)
 const mutations = {
-  changeData(state, ob){
+  setProductCacheByType(state, ob){
   	state[ob.type] = ob.data;
-  }
+  },
+  setHomeProductCache(state, data) {
+    if(data instanceof Array) {
+      state.homepage = data;
+    }
+  },
+  cacheProductSelected(state, data) {
+    if(data instanceof Object) {
+      state.selected = data;
+    }
+  },
+  updateSelectProductInfoId(data, id) {
+    state.selected.productInfoId = id;
+  }  
 }
 
 
