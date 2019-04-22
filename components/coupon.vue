@@ -1,6 +1,6 @@
 <template>
   <div class="coupon">
-    <div class="coupon-image">
+    <div :class="selected ? 'coupon-image selected-type': 'coupon-image'">
       <div class="money-num">
         <div>¥</div>
         <div>{{couponsMoney}}</div>
@@ -23,6 +23,7 @@
       userCouponsId: "",
       couponsId: "",
       status: "",
+      selected: false,
     },
     methods: {
       showTime(){
@@ -81,4 +82,15 @@
         .coupon-info-application 
           float: right
           font-size: 12px
+
+    .selected-type:before
+      content : ""
+      position : absolute
+      width: .2rem
+      height: .4rem
+      border: #009933 solid 
+      border-width: 0 .08rem .066667rem 0
+      transform : rotate(45deg)
+      left: 1.5rem
+      top: 1.5rem
 </style>

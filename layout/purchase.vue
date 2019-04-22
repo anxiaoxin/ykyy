@@ -23,41 +23,53 @@
       <div>团购人数</div>
       <div><input type="text" name="" v-model="nums" readonly="true" @click="selectPepoleNum" style="text-align:right" placeholder="点击选择"></div>
     </div>
+    <div>
+      <div>优惠券</div>
+      <div><input type="text" name="" v-model="selectedCouponMoney" readonly="true" @click="selectCoupons" style="text-align:right" placeholder="点击选择"></div>
+    </div>    
   </div>
-    <div class="footer">
-      <div class="price_info">
-        价格：<span id="price">{{product.productMoney}}</span>
-      </div>
-      <div class="pay_btn" @click="routeToPayResult">
-        <div>去支付</div>
-      </div>
+  <div class="footer">
+    <div class="price_info">
+      价格：<span id="price">{{product.productMoney}}</span>
     </div>
-    <vue-pickers
-      :show="pickShow"
-      :columns="1"
-      :defaultData="defaultData"
-      :selectData="pickData"
-      @cancel="close"
-      @confirm="confirmFn"
-    ></vue-pickers>
+    <div class="pay_btn" @click="routeToPayResult">
+      <div>去支付</div>
+    </div>
+  </div>
+  <vue-pickers
+    :show="pickShow"
+    :columns="1"
+    :defaultData="defaultData"
+    :selectData="pickData"
+    @cancel="close"
+    @confirm="confirmFn"
+  ></vue-pickers>
+  <coupon-model
+    :show="showModel" 
+    :selectedId="selectedCouponId"
+    @selected="selectedCoupons">
+  </coupon-model>
   </div>
 </template>
 
 <script>
   import ListItem from '../components/productList'
   import vuePickers from 'vue-pickers'
+  import couponModel from '../components/couponModel'
   import { GroupNums } from '../utils/constant.js'
   import { AddPurchase, GetProductInfoByProductId, WxPay } from '../utils/http.js'
   export default {
     name: "purchase",
     components: {
       ListItem,
-      vuePickers
+      vuePickers,
+      couponModel
     },    
     data(){
       return {
         type: "simple",
         pickShow: false,
+        showModel: false,
         defaultData: [],
         pickData: {
           data1: []
@@ -69,7 +81,9 @@
         pickersType: "studentName",
         price: 0,
         student_id: '',
-        productInfoId: ''
+        productInfoId: '',
+        selectedCouponId: undefined,
+        selectedCouponMoney: ''
       }
     },
     mounted(){
@@ -113,7 +127,7 @@
           })         
         })
       },
-        routeToPayResult(){
+      routeToPayResult(){
         let productInfo = this.productInfos[this.productInfoId];
         let params = {
           purchaseBean: {
@@ -142,7 +156,6 @@
         })
       },
       goToPay(userId, studentId, productInfoId, purchase) {
-        console.log(12312312123);
         let params = {
           userId,
           studentId,
@@ -225,6 +238,13 @@
         }else if(this.pickersType === "pepoleNum"){
           this.nums = dataValue;
         }
+      },
+      selectCoupons() {
+        this.showModel = true;
+      },
+      selectedCoupons(id, money) {
+        this.selectedCouponId = id;
+        this.selectedCouponMoney = money;
       }
     },
     computed: {

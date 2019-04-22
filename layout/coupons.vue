@@ -5,7 +5,7 @@
       :headName="headName"
     >
     </t-head>
-    <div v-for="coupon in coupons">
+    <div v-for="(coupon, key) in coupons" v-bind:key="key">
       <coupon
         :beginTime="coupon.benginTime"
         :endTime="coupon.endTime"
