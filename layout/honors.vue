@@ -6,7 +6,7 @@
     >
     </t-head>
     <div class="honors">
-      <div v-for="honor in honors">
+      <div v-for="(honor, key) in honors" v-bind:key="key">
         <div class="honor-list-container">
           <div class="honor-list-item-time">2018.09.10</div>
           <div class="honor-list-item-body">

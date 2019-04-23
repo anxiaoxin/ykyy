@@ -19,6 +19,9 @@
                     :journeyState="product.purchase_status"
                     :pageBySelf='false'
                    ></list-item>        
+                  <div v-if="myJourneyProductData.length == 0" class=".empty-message">
+                    暂无行程
+                  </div>
                 </div>
               </div>
             </div>
@@ -33,7 +36,10 @@
                     :orderTime="product.productInfoBean.product_info_time"
                     :orderPrice="product.purchase_money"
                     :pageBySelf="false"
-                   ></list-item>        
+                   ></list-item>  
+                  <div v-if="planJourneyProductData.length == 0" class=".empty-message">
+                    暂无行程
+                  </div>                         
                 </div>
               </div>
             </div>

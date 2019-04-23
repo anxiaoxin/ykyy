@@ -30,7 +30,7 @@
   </div>
   <div class="footer">
     <div class="price_info">
-      价格：<span id="price">{{product.productMoney}}</span>
+      价格：<span id="price">{{product.productMoney - (selectedCouponMoney || 0)}}</span>
     </div>
     <div class="pay_btn" @click="routeToPayResult">
       <div>去支付</div>
@@ -146,7 +146,7 @@
             product_info_teacherid: productInfo.product_info_teacherid
           },
           userId: this.$store.state.mine.userId,
-          userCouponsId: -1
+          userCouponsId: this.selectedCouponId || -1
         }
         AddPurchase(params).then(data => {
           if(data.code === 200) {
