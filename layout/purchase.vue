@@ -47,7 +47,8 @@
   <coupon-model
     :show="showModel" 
     :selectedId="selectedCouponId"
-    @selected="selectedCoupons">
+    @selected="selectedCoupons"
+    @close="closeModel">
   </coupon-model>
   </div>
 </template>
@@ -245,7 +246,46 @@
       selectedCoupons(id, money) {
         this.selectedCouponId = id;
         this.selectedCouponMoney = money;
-      }
+      },
+      closeModel() {
+        this.showModel = false;
+      },
+      share() {
+        // 操作分享相关
+        let me = this;
+        let params = {"url": location.href.split('#')[0]};
+        GetSign(params).then(data => {
+          let wxData = data.result;
+          wx.config({
+            debug: false, //开启debug模式，在验证签名过程中会返回对应信息
+            appId: wxData.appid,
+            timestamp: +wxData.timestamp,
+            nonceStr: wxData.nonceStr,
+            signature: wxData.signature,
+            jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
+          })    
+          wx.ready(function(){
+            let link = "https://www.yikeyiyou.com";
+            let sdata = {
+                title: "一课一游",
+                desc: "一课一游的分享",
+                link: link,
+                imgUrl: "https://www.aiyouyi.net.cn/static/assets/logo.jpg",
+                success: function (e) {
+
+                },
+                cancel: function (e) {
+                  _showTip("取消分享");  
+                },
+                fail: function() {
+                  _showTip("分享失败");
+                }
+            };
+            wx.onMenuShareTimeline(sdata);
+            wx.onMenuShareAppMessage(sdata);
+        });
+        })
+      }      
     },
     computed: {
       product() {
