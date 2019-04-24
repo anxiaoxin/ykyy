@@ -41,7 +41,6 @@ const state = {
     }
   }
   
-  
   // mutaions只能进行同步操作
   // actions中定义的方法可以进行异步发作，在异步方法内进行commit操作
   const actions = {}
