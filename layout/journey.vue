@@ -19,10 +19,10 @@
                     :journeyState="product.purchase_status"
                     :pageBySelf='false'
                    ></list-item>        
-                  <div v-if="myJourneyProductData.length == 0" class=".empty-message">
-                    暂无行程
-                  </div>
                 </div>
+                <div v-if="myJourneyProductData.length == 0" class="empty-message">
+                  暂无行程
+                </div>                
               </div>
             </div>
             <div class="swiper-slide">
@@ -36,11 +36,11 @@
                     :orderTime="product.productInfoBean.product_info_time"
                     :orderPrice="product.purchase_money"
                     :pageBySelf="false"
-                   ></list-item>  
-                  <div v-if="planJourneyProductData.length == 0" class=".empty-message">
-                    暂无行程
-                  </div>                         
+                   ></list-item>                           
                 </div>
+                <div v-if="planJourneyProductData.length == 0" class="empty-message">
+                  暂无行程
+                </div>                
               </div>
             </div>
           </div>
@@ -100,7 +100,8 @@
       }
       let params = {
         user_id: user_id,
-        page: 1
+        page: 1,
+        pageNum: 100
       }
       _utils.getAndCacheUserPurchase.call(this, params);
     },
@@ -119,7 +120,6 @@
         return this.$store.state.purchaseProduct.purchaseState;
       },
       planJourneyProductData() {
-        console.log(this.$store.state.purchaseProduct.unPayPurchase);
         return this.$store.state.purchaseProduct.unPayPurchase;
       }
     }
@@ -149,6 +149,7 @@
     position: fixed
     top: 2.24rem
     bottom: 0
+    width: 100%
     overview-y: scroll
     > div
       min-height: 100%

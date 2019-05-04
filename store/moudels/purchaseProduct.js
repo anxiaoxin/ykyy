@@ -2,7 +2,9 @@
 // 属性字段
 const state = {
   unPayPurchase: [],
-  purchaseState: []
+  purchaseState: [],
+  finishedState: [],
+  honorData: {}
 }
 
 // 等同于计算属性，该对象定义的属性是通过state
@@ -18,16 +20,24 @@ const mutations = {
     if(data instanceof Array) {
       let unPayPurchase = [];
       let purchaseState = [];
+      let finishedState = [];
       data.forEach(item => {
         if(item.purchase_status === 0) {
           unPayPurchase.push(item);
         }else {
           purchaseState.push(item);
         }
+        if(item.purchase_status === 3) {
+          finishedState.push(item);
+        }
       })
       state.unPayPurchase = unPayPurchase;
       state.purchaseState = purchaseState;
+      state.finishedState = finishedState;
     }
+  },
+  setHonorCache(state, data) {
+    state.honorData = data;
   }
 }
 

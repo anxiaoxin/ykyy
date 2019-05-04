@@ -9,14 +9,14 @@
       <div class="honor-body">
         <div class="honor-info-title">荣誉证书</div>
         <div class="honor-info-head">
-          <span class="student-name">黄豆豆</span>同学
+          <span class="student-name">{{honorInfo.studentName}}</span>同学
         </div>
         <div class="honor-info-body">
-            {{honorInfo}}
+            在本次游学（{{honorInfo.name}}）中，你表现优异，特发此证，以资鼓励！
         </div>
         <div class="honor-info-foot">
           <div class="honor-info-foot-cp"></div>
-          <div class="honor-info-time">{{honorTime}}</div>
+          <div class="honor-info-time">{{honorInfo.time}}</div>
         </div>
       </div>
     </div>
@@ -28,9 +28,12 @@ export default {
   name: "honor",
   data(){
     return {
-      honorInfo: "在本次游学（北京-六朝古都）中，你表现优异，特发此证，以资鼓励！",
-      honorTime: "2018.09.10",
       headName: "荣誉证书"
+    }
+  },
+  computed: {
+    honorInfo() {
+      return this.$store.state.purchaseProduct.honorData;
     }
   }
 }

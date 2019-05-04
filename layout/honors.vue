@@ -6,45 +6,64 @@
     >
     </t-head>
     <div class="honors">
-      <div v-for="(honor, key) in honors" v-bind:key="key">
+      <div v-for="(honor, key) in honorsInfo" v-bind:key="key">
         <div class="honor-list-container">
           <div class="honor-list-item-time">2018.09.10</div>
           <div class="honor-list-item-body">
             <div class="honor-list-item-type" :class="'category-' + honor.category"></div>
             <div class="honor-list-item-name">北京-六朝古都</div>
-            <div class="honor-list-item-detail" @click="pageTo(honor.id)">查看证书 ></div>
+            <div class="honor-list-item-detail" @click="pageTo(key)">查看证书 ></div>
           </div>
         </div>
       </div>
+      <div v-if="honorsInfo.length == 0" class="empty-message">
+        暂无证书
+      </div> 
     </div>
   </div>
 </template>
 
 <script>
+import { ProductCategory } from "../utils/constant"
 export default {
   name: "honors",
   data(){
     return {
       headName: "荣誉证书",
-      honors: [
-        {
-          time: "2018.09.10",
-          name: "北京-六朝古都",
-          category: "history",
-          id: 1
-        },
-        {
-          time: "2018.09.10",
-          name: "北京-六朝古都",
-          category: "history",
-          id: 1
-        }        
-      ]
     }
   },
+  mounted() {
+    if(this.$store.state.purchaseProduct.unPayPurchase.length || this.$store.state.purchaseProduct.purchaseState.length) {
+      return ;
+    }
+    let params = {
+      user_id: user_id,
+      page: 1,
+      pageNum: 100
+    }
+    _utils.getAndCacheUserPurchase.call(this, params);
+  },
   methods: {
-    pageTo(id){
+    pageTo(index){
+      this.$store.commit("setHonorCache", this.honorsInfo[index]);
       this.$router.push({path: "/mine/honor"})
+    }
+  },
+  computed: {
+    finishedProductData() {
+      return this.$store.state.purchaseProduct.finishedState;
+    },
+    honorsInfo() {
+      let honorsInfo = [];
+      this.finishedProductData.forEach((item) => {
+        honorsInfo.push({
+          time: item.purchase_change_time,
+          name: item.productInfoBean.productBean.product_name,
+          category: ProductCategory[item.productInfoBean.productBean.product_type],
+          studentName: item.student_name
+        })
+      })
+      return honorsInfo;
     }
   }
 }
