@@ -1,10 +1,10 @@
 <template>
   <div>
-    <t-head 
+    <!-- <t-head 
       :isShowBack=true
       :headName="headName"
     >
-    </t-head>
+    </t-head> -->
     <div class="about-head"></div>
     <div class="app-version">版本号：{{version}}</div>
     <div class="about-info">

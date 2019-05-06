@@ -1,10 +1,10 @@
 <template>
   <div>
-    <t-head 
+    <!-- <t-head 
       :isShowBack=true
       :headName="headName"
     >
-    </t-head>
+    </t-head> -->
     <div>
       <div class="product-info-contain">
         <list-item

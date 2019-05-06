@@ -19,7 +19,8 @@ const Urls = {
   addPurchase: "/purchase/addPurchase",
   getProductInfoById: "/productinfo/getProductInfoById",
   getProductInfoByProductId: "/productinfo/getProuctInfoByProductId",
-  pay: "/wx/pay"
+  pay: "/wx/pay",
+  getSign: "/wx/getSign"
 }
 
 export default Urls;

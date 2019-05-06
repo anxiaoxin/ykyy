@@ -1,10 +1,10 @@
 <template>
   <div>
-    <t-head 
+    <!-- <t-head 
       :isShowBack=true
       :headName="headName"
     >
-    </t-head>
+    </t-head> -->
     <div v-if="step === 1">
       <div class="edit-student-info">
         <div>

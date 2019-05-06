@@ -1,10 +1,10 @@
 <template>
   <div>
-    <t-head 
+    <!-- <t-head 
       :isShowBack=true
       :headName="headName"
     >
-    </t-head>
+    </t-head> -->
     <div v-for="(coupon, key) in coupons" v-bind:key="key">
       <coupon
         :beginTime="coupon.benginTime"

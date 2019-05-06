@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="course_detail">
-      课程详情图文缺失
+      <span v-if="!ServerUrl+productInfo.productPath">课程详情图文缺失</span> 
       <iframe :src="ServerUrl+productInfo.productPath" frameborder="0"></iframe>
     </div>
     <div class="course_info_button top-box-shadow">
@@ -51,9 +51,21 @@ export default {
       if(data.code === 200) {
         me.$store.commit("updateSelectProductInfoId", data.result.product_info_id);
       }
+      this.initShare(data.result);
     })
   },
   methods: {
+    initShare(data) {
+      let productInfo = productInfo;
+      let url = location.href.split('#')[0];
+      url += `#/productInfo${this.productId}`;
+      let info = {
+        title: data.productBean.product_name,
+        desc: data.productBean.product_introduction,
+        url: url
+      }
+      _utils.initShare(info);
+    },
     routeTo(type){
       this.$router.push({name: "purchase", params:{type: type}});
     }
@@ -116,6 +128,9 @@ export default {
   color:rgba(51,51,51,1);
   line-height:0.746667rem;
   letter-spacing:0.026667rem;
+  iframe 
+    margin-bottom: 1.066667rem
+
 
 .course_info_button
   width:100%;

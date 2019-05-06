@@ -5,7 +5,7 @@
 
 import Msg from '../utils/tipMessage.js';
 import { GetUserInfo, GetStudentsByUserId, GetHomePageProduct, GetProductById,
-  GetUserCoupons, GetProductByType, GetUserPurchaseByUserId } from './http.js'
+  GetUserCoupons, GetProductByType, GetUserPurchaseByUserId, GetSign } from './http.js'
 import { EndParamToFrontParam, FrontParamToEndParam, ProductType, ProductCategory } from './constant.js'
 import coupons from '../store/moudels/coupons.js';
 const phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
@@ -497,6 +497,45 @@ class Utils {
     })
   }
 
+  initShare(info) {
+    let params = {"url": location.href.split('#')[0]};
+    GetSign(params).then(data => {
+      this.configWxShare(info, data);
+    }).catch(data => {
+      
+    })
+  } 
+
+  configWxShare(info, wxData) {
+    wx.config({
+      debug: false, //开启debug模式，在验证签名过程中会返回对应信息
+      appId: wxData.appid,
+      timestamp: +wxData.timestamp,
+      nonceStr: wxData.nonceStr,
+      signature: wxData.signature,
+      jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
+    })
+    //ready中调用api
+    wx.ready(function(){
+      let sdata = {
+          title: info.title,
+          desc: info.desc,
+          url: info.url,
+          imgUrl: info.imgUrl,
+          success: function (r) {
+              _showTip("分享成功");
+          },
+          cancel: function () {
+            _showTip("取消分享");
+          },
+          fail: function(r) {
+            _showTip("分享失败");
+          } 
+      };
+      wx.onMenuShareTimeline(sdata);
+      wx.onMenuShareAppMessage(sdata);
+  }); 
+}
 }
 
 export default new Utils;

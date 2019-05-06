@@ -139,6 +139,10 @@ const WxPay = data => {
   return commonGet(Urls.pay, data, {}, {msg: "请稍等..."});
 }
 
+const GetSign = data => {
+  return commonPost(Urls.getSign, data);
+}
+
 export {
   Register,
   ForgetPass,
@@ -160,5 +164,6 @@ export {
   AddPurchase,
   GetProductInfoById,
   GetProductInfoByProductId,
-  WxPay
+  WxPay,
+  GetSign
 }

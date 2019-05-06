@@ -1,10 +1,10 @@
 <template>
   <div>    
-    <t-head 
+    <!-- <t-head 
       :isShowBack=true
       :headName="headName"
     >
-    </t-head>
+    </t-head> -->
     <div class="student-list-container">
       <div class="student-list-item-box" v-for="(student, key) in studentsInfo" v-bind:key="key">
         <student-list-item @editStudent="editStudent"

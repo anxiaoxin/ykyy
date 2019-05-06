@@ -1,10 +1,10 @@
 <template>
   <div>
-    <t-head 
+    <!-- <t-head 
       :isShowBack=true
       :headName="headName"
     >
-    </t-head>
+    </t-head> -->
     <div class="honor-contain">
       <div class="honor-body">
         <div class="honor-info-title">荣誉证书</div>
@@ -51,7 +51,7 @@ export default {
 
   .honor-contain
     position: fixed
-    top: 1.173333rem
+    top: 0
     left: 0
     right: 0
     bottom: 0

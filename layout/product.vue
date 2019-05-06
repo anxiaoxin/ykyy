@@ -1,10 +1,10 @@
 <template>
   <div>
-    <t-head 
+    <!-- <t-head 
       :isShowBack=true
       :headName="name"
     >
-    </t-head>
+    </t-head> -->
     <div class="product-list-container">
       <div v-for="(product, key) in productData" v-bind:key="key">
         <list-item

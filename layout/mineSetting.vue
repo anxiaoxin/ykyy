@@ -1,10 +1,10 @@
 <template>
   <div>
-    <t-head 
+    <!-- <t-head 
       :isShowBack=true
       :headName="headName"
     >
-    </t-head>
+    </t-head> -->
     <div class="mine-info-list">
       <div @click="pageTo('changePhoneNum')" class="mine-type-item">
         <div class="mine-type-text">修改手机号</div>

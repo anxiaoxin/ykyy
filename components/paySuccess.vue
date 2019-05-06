@@ -26,7 +26,7 @@ export default {
       this.$router.replace({path: "/main/home"})
     },
     share(){
-
+      _showTip("点击右上角选择分享。")
     }
   }
 }

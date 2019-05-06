@@ -1,10 +1,10 @@
 <template>
 	<div>
-    <t-head 
+    <!-- <t-head 
       :isShowBack=false
       :headName="headName"
     >
-    </t-head>
+    </t-head> -->
 		<router-view></router-view>	
     <foot></foot>
 	</div>

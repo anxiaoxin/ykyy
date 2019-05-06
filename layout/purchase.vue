@@ -196,11 +196,12 @@
           }, 
           function(res){    
             if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-                this.$router.push({name: "paySuccess"});
+                me.$router.push({name: "paySuccess"});
                   //支付成功后跳转的页面
               }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
-                
+                _showTip("支付取消");
               }else if(res.err_msg == "get_brand_wcpay_request:fail"){
+                _showTip("支付失败");
                 WeixinJSBridge.call('closeWindow');
               } 
         }); 
