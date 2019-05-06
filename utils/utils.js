@@ -502,7 +502,7 @@ class Utils {
     GetSign(params).then(data => {
       this.configWxShare(info, data);
     }).catch(data => {
-      
+
     })
   } 
 
@@ -521,7 +521,7 @@ class Utils {
           title: info.title,
           desc: info.desc,
           url: info.url,
-          imgUrl: info.imgUrl,
+          imgUrl: info.imgUrl || "https://www.yikeyiyou.com/share/logo.jpg",
           success: function (r) {
               _showTip("分享成功");
           },

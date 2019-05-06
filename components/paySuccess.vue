@@ -21,6 +21,14 @@ export default {
       
     }
   },
+  mounted() {
+    let url = location.href.split('#')[0];
+    _utils.initShare({
+      title: "我购买了一课一游的游学产品",
+      desc: "一课一游简介",
+      url: url
+    });
+  },
   methods: {
     pageHome(){
       this.$router.replace({path: "/main/home"})
