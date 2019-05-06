@@ -5,7 +5,7 @@
 
 import Msg from '../utils/tipMessage.js';
 import { GetUserInfo, GetStudentsByUserId, GetHomePageProduct, GetProductById,
-  GetUserCoupons, GetProductByType, GetUserPurchaseByUserId, GetSign } from './http.js'
+  GetUserCoupons, GetProductByType, GetUserPurchaseByUserId, GetSign, UpdateParentId } from './http.js'
 import { EndParamToFrontParam, FrontParamToEndParam, ProductType, ProductCategory } from './constant.js'
 import coupons from '../store/moudels/coupons.js';
 const phoneReg = /^[1][3,4,5,7,8][0-9]{9}$/;
@@ -242,6 +242,7 @@ class Utils {
   setUserCache(data){
     let cacheData = _utils.changeParamNames(data, "ETF");
     this.$store.commit("setUserCache", cacheData);
+    _utils.handleShare.call(this);
   }
 
   /**
@@ -500,7 +501,7 @@ class Utils {
   initShare(info) {
     let params = {"url": location.href.split('#')[0]};
     GetSign(params).then(data => {
-      this.configWxShare(info, data);
+      this.configWxShare(info, data.result);
     }).catch(data => {
 
     })
@@ -517,13 +518,16 @@ class Utils {
     })
     //ready中调用api
     wx.ready(function(){
+      let pid = info.pid;
+      let uid = _utils.getCookie("user_id");
+      let url =  `https://www.yikeyiyou.com/?ykyy_u=${uid}&ykyy_p=${pid}`;
       let sdata = {
           title: info.title,
           desc: info.desc,
-          url: info.url,
-          imgUrl: info.imgUrl || "https://www.yikeyiyou.com/share/logo.jpg",
+          link: url,
+          imgUrl: info.imgUrl || "https://www.yikeyiyou.com/shares/logo.jpg",
           success: function (r) {
-              _showTip("分享成功");
+            _showTip("分享成功");
           },
           cancel: function () {
             _showTip("取消分享");
@@ -535,7 +539,26 @@ class Utils {
       wx.onMenuShareTimeline(sdata);
       wx.onMenuShareAppMessage(sdata);
   }); 
-}
+  }
+
+  updateParenId(info) {
+    UpdateParentId(info).then(data => {
+
+    }).catch(data => {
+
+    })
+  }
+
+  getUrlParam(name) {
+    let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    value = window.location.search.substr(1).match(reg);
+    return value[2];
+  }
+
+  handleShare() {
+    let pid = _utils.getCookie("pid");
+    let uid = _utils.getCookie("uid");
+  }
 }
 
 export default new Utils;

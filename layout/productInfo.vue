@@ -18,11 +18,11 @@
       </div>
     </div>
     <div class="course_detail">
-      <span v-if="!ServerUrl+productInfo.productPath">课程详情图文缺失</span> 
-      <iframe :src="ServerUrl+productInfo.productPath" frameborder="0"></iframe>
+      <span v-if="!productInfo.productPath">课程详情图文缺失</span> 
+      <iframe v-if="productInfo.productPath" id="myiframe" :src="ServerUrl+productInfo.productPath" @load="setFrameHeight" frameborder="0"></iframe>
     </div>
     <div class="course_info_button top-box-shadow">
-      <div class="share_btn right-box-shadow">分享</div>
+      <div class="share_btn right-box-shadow" @click="toShare">分享</div>
       <div class="buy_single" @click="routeTo('simple')">购买</div>
       <div class="buy_multi" @click="routeTo('group')">团购</div>
     </div> 
@@ -55,19 +55,28 @@ export default {
     })
   },
   methods: {
+    toShare() {
+      _showTip("点击右上角选择分享");
+    },
     initShare(data) {
       let productInfo = productInfo;
-      let url = location.href.split('#')[0];
-      url += `#/productInfo${this.productId}`;
       let info = {
         title: data.productBean.product_name,
         desc: data.productBean.product_introduction,
-        url: url
+        pid: this.productId
       }
       _utils.initShare(info);
     },
     routeTo(type){
       this.$router.push({name: "purchase", params:{type: type}});
+    },
+    setFrameHeight() {
+      document.domain="yikeyiyou.com";
+      var iframe = document.getElementById("myiframe");
+      var bHeight = iframe.contentWindow.document.body.scrollHeight;
+      var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
+      var height = Math.min(bHeight, dHeight);
+      iframe.height = height;      
     }
   },
   computed: {
@@ -130,6 +139,9 @@ export default {
   letter-spacing:0.026667rem;
   iframe 
     margin-bottom: 1.066667rem
+    width: 90%
+    margin-top: 0.5rem
+    box-sizing : border-box
 
 
 .course_info_button

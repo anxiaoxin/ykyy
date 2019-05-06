@@ -143,6 +143,10 @@ const GetSign = data => {
   return commonPost(Urls.getSign, data);
 }
 
+const UpdateParentId =  data => {
+  return commonPost(Urls.updateParentId, data);
+}
+
 export {
   Register,
   ForgetPass,
@@ -165,5 +169,6 @@ export {
   GetProductInfoById,
   GetProductInfoByProductId,
   WxPay,
-  GetSign
+  GetSign,
+  UpdateParentId
 }
