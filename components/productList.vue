@@ -43,7 +43,7 @@
       },
       title: String,
       abstract: String,
-      orderTime: Number,
+      orderTime: String,
       journeyState: Number,
       category: String,
       orderState: String, 
@@ -81,7 +81,7 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
 
-secondInfoBottom = 0.466667rem
+secondInfoBottom = 0.2rem
 
 .product-item-container
     width: 100%
@@ -132,9 +132,10 @@ secondInfoBottom = 0.466667rem
   
 .order-tip-info
   display: flex
+  width :100%
   margin-bottom: secondInfoBottom
+  justify-content : space-between
   .time
-    width: 1.84rem
     margin-right: 0.4rem
     color: rgb(183,183,183)
     

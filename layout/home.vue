@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showPage">
+  <div>
     <div class="home-head-imag">
       <img src="../assets/image/tmp/mainhead.png">
     </div>
@@ -49,7 +49,7 @@
     },    
     data(){
       return {
-        showPage: false
+        
       }
     },
     mounted(){

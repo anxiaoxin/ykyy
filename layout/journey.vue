@@ -94,10 +94,10 @@
       if(!user_id) {
         return ;
       }
-      // 获取数据
-      if(this.$store.state.purchaseProduct.unPayPurchase.length || this.$store.state.purchaseProduct.purchaseState.length) {
-        return ;
-      }
+      // // 获取数据
+      // if(this.$store.state.purchaseProduct.unPayPurchase.length || this.$store.state.purchaseProduct.purchaseState.length) {
+      //   return ;
+      // }
       let params = {
         user_id: user_id,
         page: 1,
@@ -150,7 +150,7 @@
     top: 2.24rem
     bottom: 0
     width: 100%
-    overview-y: scroll
+    overflow-y: scroll
     > div
       min-height: 100%
   .tab-active

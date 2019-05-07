@@ -475,7 +475,7 @@ class Utils {
   getAndCacheUserPurchase(param) {
     GetUserPurchaseByUserId(param).then(data => {
       if(data.code === 200) {
-        let res = data.result.filter(item => {
+        let res = data.result.list.filter(item => {
           if(item.productInfoBean) {
             return true;
           }
@@ -519,7 +519,7 @@ class Utils {
     //ready中调用api
     wx.ready(function(){
       let pid = info.pid;
-      let uid = _utils.getCookie("user_id");
+      let uid = _utils.getCookie("userId");
       let url =  `https://www.yikeyiyou.com/?ykyy_u=${uid}${pid ? `&ykyy_p=${pid}` : ""}`;
       let sdata = {
           title: info.title,
@@ -551,8 +551,12 @@ class Utils {
 
   getUrlParam(name) {
     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    value = window.location.search.substr(1).match(reg);
-    return value[2];
+    let value = window.location.search.substr(1).match(reg);
+    if(value) {
+      return value[2];
+    }else {
+      return undefined;
+    }
   }
 
   handleShare() {
@@ -571,7 +575,7 @@ class Utils {
     }
 
     if(pid) {
-      this.$router.push({name: 'productInfo',params: {id: this.pid}});
+      this.$router.push({name: 'productInfo',params: {id: pid}});
       _utils.deleteCookie("pid");
     }
   }

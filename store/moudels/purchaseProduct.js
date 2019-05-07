@@ -34,6 +34,7 @@ const mutations = {
       state.unPayPurchase = unPayPurchase;
       state.purchaseState = purchaseState;
       state.finishedState = finishedState;
+      console.log(state);
     }
   },
   setHonorCache(state, data) {
