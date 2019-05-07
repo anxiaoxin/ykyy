@@ -520,7 +520,7 @@ class Utils {
     wx.ready(function(){
       let pid = info.pid;
       let uid = _utils.getCookie("user_id");
-      let url =  `https://www.yikeyiyou.com/?ykyy_u=${uid}&ykyy_p=${pid}`;
+      let url =  `https://www.yikeyiyou.com/?ykyy_u=${uid}${pid ? `&ykyy_p=${pid}` : ""}`;
       let sdata = {
           title: info.title,
           desc: info.desc,
@@ -558,6 +558,22 @@ class Utils {
   handleShare() {
     let pid = _utils.getCookie("pid");
     let uid = _utils.getCookie("uid");
+    // 如果有uid则进行father node的绑定
+    if(uid) {
+      UpdateParentId({
+        userId: uid,
+        userWx: this.$store.state.mine.userWx
+      }).then(data => {
+        _utils.deleteCookie("uid");
+      }).catch(data => {
+
+      })
+    }
+
+    if(pid) {
+      this.$router.push({name: 'productInfo',params: {id: this.pid}});
+      _utils.deleteCookie("pid");
+    }
   }
 }
 
