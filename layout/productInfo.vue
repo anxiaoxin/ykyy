@@ -71,14 +71,12 @@ export default {
       this.$router.push({name: "purchase", params:{type: type}});
     },
     setFrameHeight() {
-      console.log(document.documentElement.clientHeight);
       let head = document.getElementById("productInfoHead");
-      console.log(head.offsetHeight);
-      document.domain="yikeyiyou.com";
+      let productBasic = document.getElementById("productBasic");
+      let productFoot = document.getElementById("productFoot");
+      let clientHeight = document.documentElement.clientHeight;
       var iframe = document.getElementById("myiframe");
-      var bHeight = iframe.contentWindow.document.body.scrollHeight;
-      var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
-      var height = Math.min(bHeight, dHeight);
+      let height = clientHeight - head - productBasic - productFoot;
       iframe.height = height;      
     }
   },
