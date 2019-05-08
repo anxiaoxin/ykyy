@@ -46,7 +46,7 @@ export default {
   methods: {
     pageTo(index){
       this.$store.commit("setHonorCache", this.honorsInfo[index]);
-      this.$router.push({path: "/mine/honor"})
+      this.$router.push({path: "/mine/honor"});
     }
   },
   computed: {

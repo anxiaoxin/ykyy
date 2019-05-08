@@ -4,7 +4,8 @@ const state = {
   unPayPurchase: [],
   purchaseState: [],
   finishedState: [],
-  honorData: {}
+  honorData: {},
+  selectedPurchase: {}
 }
 
 // 等同于计算属性，该对象定义的属性是通过state
@@ -39,6 +40,11 @@ const mutations = {
   },
   setHonorCache(state, data) {
     state.honorData = data;
+  },
+  setSelectedPurchaseCache(state, data) {
+    if(data instanceof Object) {
+      state.selectedPurchase = data;
+    }
   }
 }
 

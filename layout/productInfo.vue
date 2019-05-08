@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="cover_pic">
+    <div id="productInfoHead" class="cover_pic">
       <img :src="ServerUrl+productInfo.productImage">
     </div>
-    <div class="product_basic_info">
+    <div id="productBasic" class="product_basic_info">
       <div class="product_name">
         {{productInfo.productName}}
       </div>
@@ -19,9 +19,9 @@
     </div>
     <div class="course_detail">
       <span v-if="!productInfo.productPath">课程详情图文缺失</span> 
-      <iframe v-if="productInfo.productPath" id="myiframe" :src="ServerUrl+productInfo.productPath" @load="setFrameHeight" frameborder="0"></iframe>
+      <iframe v-if="productInfo.productPath" id="myiframe" :src="productInfo.productPath" @load="setFrameHeight" frameborder="0"></iframe>
     </div>
-    <div class="course_info_button top-box-shadow">
+    <div id="productFoot" class="course_info_button top-box-shadow">
       <div class="share_btn right-box-shadow" @click="toShare">分享</div>
       <div class="buy_single" @click="routeTo('simple')">购买</div>
       <div class="buy_multi" @click="routeTo('group')">团购</div>
@@ -71,6 +71,9 @@ export default {
       this.$router.push({name: "purchase", params:{type: type}});
     },
     setFrameHeight() {
+      console.log(document.documentElement.clientHeight);
+      let head = document.getElementById("productInfoHead");
+      console.log(head.offsetHeight);
       document.domain="yikeyiyou.com";
       var iframe = document.getElementById("myiframe");
       var bHeight = iframe.contentWindow.document.body.scrollHeight;

@@ -16,7 +16,7 @@
           :productId="purchaseInfo.productInfoBean.productBean.productId"
          ></list-item>
       </div>
-      <div v-if="type1" class="journey-body">
+      <div v-if="type==0" class="journey-body">
         <div>
           <span>姓名</span>
           <span>{{purchaseInfo.student_name}}</span>
@@ -50,21 +50,21 @@
           <span></span>
         </div>                       
       </div>
-      <div v-if="type2" class="journey-body">
+      <div v-if="type==1" class="journey-body">
         <div>
           <span>姓名</span>
-          <span>黄豆豆</span>
+          <span>{{purchaseInfo.student_name}}</span>
         </div>
         <div>
           <span>时间</span>
-          <span>2018-09-28</span>
+          <span>{{purchaseInfo.purchase_time}}</span>
         </div>
         <div class="journey-horizen"></div>
-        <div>
+        <!-- <div @click="routeToImages">
           <span>相册</span>
           <span>></span>
-        </div>
-        <div>
+        </div> -->
+        <div @click="goToHonor">
           <span>荣誉证书</span>
           <span>></span>
         </div>   
@@ -74,11 +74,12 @@
             <textarea name="" id="journey-assess"  placeholder="请填写评价">
             </textarea>
           </div>
-
         </div>     
       </div>
       <div class="journey-detail-back">
-        <div class="journey-detail-button" @click="pageBack">返回</div>
+        <div class="journey-detail-button" @click="pageBack">
+          {{purchaseInfo.purchaseStatus == 0 ? "支付" : "返回"}}
+        </div>
       </div>
     </div>
   </div>
@@ -94,19 +95,98 @@ export default {
   data(){
     return {
       studentName: "",
-      type1: true,
-      type2: false,
       headName: "进行中的行程"
     }
   },
+  mounted() {
+    let purchaseId = this.$route.params.id;
+  },
   methods: {
     pageBack() {
-      this.$router.go(-1);
-    }
+      if(this.purchaseInfo.purchaseStatus !== 0) {
+        this.$router.go(-1);
+        return ;
+      }
+      let purchase = this.purchaseInfo.purchase_id;
+      let userId = this.purchaseInfo.user_id;
+      let studentId = this.purchaseInfo.student_id;
+      let productInfoId = this.purchaseInfo.product_info_id;
+      this.goToPay(userId, studentId, productInfoId, purchase);
+    },  
+    goToPay(userId, studentId, productInfoId, purchase) {
+      let params = {
+        userId,
+        studentId,
+        productInfoId,
+        purchase
+      }
+      let me = this;
+      WxPay(params).then(data => {
+        window.payData = data.result;
+        if (typeof WeixinJSBridge == "undefined") {
+          if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady',
+                me.onBridgeReady, false);
+          } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady',
+                me.onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady',
+                me.onBridgeReady);
+          }
+        } else {
+          setTimeout(() => {
+            me.onBridgeReady();
+          }, 100);
+        }
+      })
+    },
+    onBridgeReady() {
+      let data = window.payData;
+      let me = this;
+      WeixinJSBridge.invoke( 'getBrandWCPayRequest', {
+        "appId":data.appId,     //公众号名称,由商户传入     
+        "timeStamp":data.timeStamp + "",         //时间戳,自1970年以来的秒数     
+        "nonceStr":data.nonceStr, //随机串     
+        "package":data.package,     
+        "signType":data.signType,         //微信签名方式：     
+        "paySign":data.paySign //微信签名 
+        }, 
+        function(res){    
+          if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+              me.$router.replace({name: "paySuccess"});
+                //支付成功后跳转的页面
+            }else if(res.err_msg == "get_brand_wcpay_request:cancel"){
+              _showTip("支付取消");
+            }else if(res.err_msg == "get_brand_wcpay_request:fail"){
+              _showTip("支付失败");
+              WeixinJSBridge.call('closeWindow');
+            } 
+      }); 
+    },   
+    goToHonor() {
+      let honorInfo = {
+        studentName: this.purchaseInfo.student_name,
+        name: this.purchaseInfo.productInfoBean.productBean.productName,
+        time: this.purchaseInfo.purchase_change_time
+      }
+      this.$store.commit("setHonorCache", honorInfo);
+      this.$router.push({path: "/mine/honor"});
+    },
+    routeToImages() {
+      _showTip("该功能暂未开放");
+    }  
   },
   computed: {
     purchaseInfo(){
-      return this.$store.state.typeProduct.selected;
+      return this.$store.state.purchaseProduct.selectedPurchase;
+    },
+    type() {
+      let st = this.$store.state.purchaseProduct.selectedPurchase;
+      if(st == 2) {
+        return 1;
+      }else {
+        return 0;
+      }
     }
   }
 }

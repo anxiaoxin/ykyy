@@ -111,7 +111,7 @@
         this.activeTab = to;
       },
       routeToDetail(product){
-        this.$store.commit("cacheProductSelected", product);
+        this.$store.commit("setSelectedPurchaseCache", product);
         this.$router.push({name: "journeyDetail",params: {id: product.purchase_id}})
       }      
     },

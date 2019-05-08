@@ -27,7 +27,6 @@ class Utils {
    * 校验数据
    */
   validate(params){
-    console.log(params);
     let me = this;
 
     for(let index = 0; index < params.length; index++){
