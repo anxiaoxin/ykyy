@@ -66,6 +66,7 @@
     },
     computed: {
       studentsInfo() {
+        console.log(this.$store.state.student);
         return this.$store.state.student.students;
       }
     }

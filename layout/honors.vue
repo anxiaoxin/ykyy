@@ -36,6 +36,7 @@ export default {
     if(this.$store.state.purchaseProduct.unPayPurchase.length || this.$store.state.purchaseProduct.purchaseState.length) {
       return ;
     }
+    let user_id = _utils.getCookie("userId");
     let params = {
       user_id: user_id,
       page: 1,

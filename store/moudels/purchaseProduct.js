@@ -23,19 +23,18 @@ const mutations = {
       let purchaseState = [];
       let finishedState = [];
       data.forEach(item => {
-        if(item.purchase_status === 0) {
+        if(item.purchase_pay === 1) {
           unPayPurchase.push(item);
         }else {
           purchaseState.push(item);
         }
-        if(item.purchase_status === 3) {
+        if(item.purchase_pay === 3) {
           finishedState.push(item);
         }
       })
       state.unPayPurchase = unPayPurchase;
       state.purchaseState = purchaseState;
       state.finishedState = finishedState;
-      console.log(state);
     }
   },
   setHonorCache(state, data) {

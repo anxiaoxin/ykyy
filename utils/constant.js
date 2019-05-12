@@ -91,7 +91,7 @@ const ProductType = ["史诗文画", "科学筑梦", "成长营地"];
 
 const ProductCategory = ["history", "science", "grow"];
 
-const PurchaseState = ["待支付", "进行中", "未完成", "已完成"];
+const PurchaseState = ["待支付", "进行中", "已完成"];
 
 const EndParamToFrontParam = {
   "student_name": "studentName",

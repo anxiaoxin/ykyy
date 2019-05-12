@@ -147,6 +147,14 @@ const UpdateParentId =  data => {
   return commonPost(Urls.updateParentId, data);
 }
 
+const DeleltePurchase = data => {
+  return commonPost(Urls.deletePurchase, data, {msg: "删除中..."});
+}
+
+const DeleteStudent = data => {
+  return commonGet(Urls.deletStudent, data, {msg: "删除中..."});
+}
+
 export {
   Register,
   ForgetPass,
@@ -170,5 +178,7 @@ export {
   GetProductInfoByProductId,
   WxPay,
   GetSign,
-  UpdateParentId
+  UpdateParentId,
+  DeleltePurchase,
+  DeleteStudent
 }

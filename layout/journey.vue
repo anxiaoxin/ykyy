@@ -17,6 +17,7 @@
                     :category="product.productInfoBean.productBean.productType"
                     :orderTime="product.productInfoBean.product_info_time"
                     :journeyState="product.purchase_status"
+                    :orderPrice="product.purchase_money"
                     :pageBySelf='false'
                    ></list-item>        
                 </div>
@@ -147,7 +148,7 @@
       font-weight: bold
   .journey-content      
     position: fixed
-    top: 2.24rem
+    top: 1.1rem
     bottom: 0
     width: 100%
     overflow-y: scroll

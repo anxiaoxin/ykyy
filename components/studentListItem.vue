@@ -12,12 +12,12 @@
         <div class="student-list-head-edit">
           <div @click="editStudent()"></div>
           <span @click="editStudent()">修改学生信息</span>
-        </div>
-      </div>
+        </div>         
+      </div>      
       <div @click="toggleBody()" class="student-list-head-show-body">
         <div :class="editClass"></div>
         <span>展开详细信息</span>
-      </div>
+      </div>    
     </div>
     <div v-if="isShowBody" class="student-list-body">
       <div>
@@ -47,12 +47,18 @@
       <div>
         <div>监护人2</div>
         <div>{{studentGuardian2}}</div>
-      </div>       
+      </div> 
+      <div>
+        <div @click="deleteStudent" class="delete_student">
+          删除
+        </div>
+      </div>      
     </div>
   </div>
 </template>
 
 <script>
+  import { DeleteStudent } from '../utils/http.js'
   export default {
     name: "studentList",
     props: {
@@ -82,6 +88,19 @@
       },
       toggleBody() {
         this.isShowBody = !this.isShowBody;
+      },
+      deleteStudent() {
+        let userId = _utils.getCookie("userId");
+        let params = {
+          userid: userId,
+          studentid: this.studentId
+        }
+        DeleteStudent(params).then(data => {
+          _showTip("删除成功");
+          _utils.getAndCatchStudents.call(this);
+        }).catch(data => {
+
+        })
       }
      },
     computed: {
@@ -180,6 +199,9 @@
       margin: 0 0.48rem
       padding-top: 0.466667rem
       border-top: 1px solid #CAC9CF
+      .delete_student
+        width: 100%
+        text-align : center
       >div
         display: flex
         justify-content: space-between

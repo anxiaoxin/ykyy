@@ -7,21 +7,21 @@
           <div class="title">{{title}}</div>
 
           <div class="abstract" v-if="type === 'product'">{{abstract}}</div>
-          <div class="order-tip-info" v-if="type === 'myJourney'">
+          <div class="order-tip-info" v-if="journeyState !== 0">
             <div class="time"><div class="product-icon-time"></div>{{orderTime}}</div>
-            <div class="journey-state"><div class="product-icon-location"></div>{{journeyState}}</div>
+            <div class="journey-state"><div class="product-icon-location"></div>{{PurchaseState[journeyState]}}</div>
           </div>
 
-          <div class="order-tip-info" v-if="type === 'planJourney'">
+          <div class="order-tip-info" v-if="journeyState === 0">
             <div class="time"><div class="product-icon-time"></div>{{orderTime}}</div>
             <div class="journey-state"><div :class="productType"></div>{{category}}</div>
           </div>
 
 
-          <div class="category" v-if="type !== 'planJourney'">
+          <div class="category" v-if="journeyState !== 0">
             <span>{{category}}</span>
           </div>          
-          <div class="order-state" v-if="type === 'planJourney'">
+          <div class="order-state" v-if="journeyState === 0">
             <div class="order-state-info">{{orderState}}</div>
             <div class="order-price">￥{{orderPrice}}</div>
           </div>
@@ -30,8 +30,14 @@
 </template>
 
 <script>
+import { PurchaseState } from '../utils/constant.js'
   export default {
     name: "ListItem",
+    data() {
+      return {
+        PurchaseState
+      }
+    },
     props: {
       type: {
         type: String,
@@ -65,7 +71,7 @@
       }      
     },
     mounted(){
-      
+      console.log(this.data);
     },
     methods: {
       toDetail(){

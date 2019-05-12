@@ -19,7 +19,8 @@
     </div>
     <div class="course_detail">
       <span v-if="!productInfo.productPath">课程详情图文缺失</span> 
-      <iframe v-if="productInfo.productPath" id="myiframe" :src="productInfo.productPath" @load="setFrameHeight" frameborder="0"></iframe>
+      <div id="haha"></div>
+      <!-- <iframe v-if="productInfo.productPath" id="myiframe" :src="productInfo.productPath" @load="setFrameHeight" frameborder="0"></iframe> -->
     </div>
     <div id="productFoot" class="course_info_button top-box-shadow">
       <div class="share_btn right-box-shadow" @click="toShare">分享</div>
@@ -59,6 +60,7 @@ export default {
       _showTip("点击右上角选择分享");
     },
     initShare(data) {
+      $("#haha").load(this.productInfo.productPath);
       let productInfo = productInfo;
       let info = {
         title: data.productBean.product_name,
@@ -75,9 +77,12 @@ export default {
       let productBasic = document.getElementById("productBasic");
       let productFoot = document.getElementById("productFoot");
       let clientHeight = document.documentElement.clientHeight;
+      let clientWdith = document.documentElement.clientWdith;
       var iframe = document.getElementById("myiframe");
       let height = clientHeight - head - productBasic - productFoot;
+      console.log(height);
       iframe.height = height;      
+      iframe.width = clientWdith;
     }
   },
   computed: {

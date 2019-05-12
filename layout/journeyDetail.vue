@@ -14,6 +14,9 @@
           :abstract="purchaseInfo.productInfoBean.productBean.productIntroduction"
           :category="purchaseInfo.productInfoBean.productBean.productType"
           :productId="purchaseInfo.productInfoBean.productBean.productId"
+          :journeyState="purchaseInfo.purchase_pay"
+          :orderTime="purchaseInfo.productInfoBean.product_info_time"
+          :orderPrice="purchaseInfo.purchase_money"
          ></list-item>
       </div>
       <div v-if="type==0" class="journey-body">
@@ -77,8 +80,11 @@
         </div>     
       </div>
       <div class="journey-detail-back">
+        <div class="journey-delete-button" @click="deletePurchase" v-if="purchaseInfo.purchase_pay == 0">
+          删除
+        </div>        
         <div class="journey-detail-button" @click="pageBack">
-          {{purchaseInfo.purchaseStatus == 0 ? "支付" : "返回"}}
+          {{purchaseInfo.purchase_pay == 0 ? "支付" : "返回"}}
         </div>
       </div>
     </div>
@@ -87,6 +93,8 @@
 
 <script>
 import ListItem from '../components/productList'
+import { WxPay, DeleltePurchase } from '../utils/http.js'
+
 export default {
   name: "journeyDetail",
   components: {
@@ -103,7 +111,7 @@ export default {
   },
   methods: {
     pageBack() {
-      if(this.purchaseInfo.purchaseStatus !== 0) {
+      if(this.purchaseInfo.purchase_pay !== 0) {
         this.$router.go(-1);
         return ;
       }
@@ -174,10 +182,22 @@ export default {
     },
     routeToImages() {
       _showTip("该功能暂未开放");
+    },
+    deletePurchase() {
+      let purchase_id = this.purchaseInfo.purchase_id;
+      DeleltePurchase({purchase_id}).then( data => {
+        _showTip("删除成功");
+        this.$router.go(-1);
+      }).catch(data => {
+        _showTip("删除失败，请重试");
+      })
     }  
   },
   computed: {
     purchaseInfo(){
+      if(!this.$store.state.purchaseProduct.selectedPurchase.purchase_id) {
+        this.$router.go(-1);
+      }
       return this.$store.state.purchaseProduct.selectedPurchase;
     },
     type() {
@@ -219,8 +239,22 @@ export default {
     background-color: white
     justify-content: center
     align-items: center
+    padding:0 0.2rem
+    .journey-delete-button
+      flex: 1
+      height: 1.173333rem
+      background-color: gray
+      border-radius: 0.106667rem
+      color: #333333
+      display: flex
+      justify-content: center
+      align-items: center
+      font-size: 16px
+      font-weight: bolder
+      color: #333333      
+      margin-right: 0.2rem
     .journey-detail-button
-      width: 93%
+      flex: 3
       height: 1.173333rem
       background-color: #FBD959
       border-radius: 0.106667rem

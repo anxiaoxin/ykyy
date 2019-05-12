@@ -21,7 +21,9 @@ const Urls = {
   getProductInfoByProductId: "/productinfo/getProuctInfoByProductId",
   pay: "/wx/pay",
   getSign: "/wx/getSign",
-  updateParentId: "/user/updateParentId"
+  updateParentId: "/user/updateParentId",
+  deletePurchase: "/purchase/deletePurchase",
+  deletStudent: "/student/deletStudent"
 }
 
 export default Urls;
