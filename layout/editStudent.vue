@@ -61,27 +61,27 @@
     <div v-if="step === 3">
       <div class="edit-student-info">
         <div>
-          <div>监护人1姓名</div>
+          <div>监护人</div>
           <div><input type="text" name="" v-model="studentGuardian1" placeholder="点击输入"></div>
         </div>
-        <div>
+        <!-- <div>
           <div>身份证号码</div>
           <div><input type="text" name="" v-model="studentIdcard1" placeholder="点击输入"></div>
-        </div>            
+        </div>             -->
         <div>
-          <div>手机号码</div>
+          <div>手机号码1</div>
           <div><input type="tel" name="" v-model="studentPhone1" placeholder="点击输入"></div>
         </div>
-        <div>
+        <!-- <div>
           <div>监护人2姓名</div>
           <div><input type="text" name="" v-model="studentGuardian2" placeholder="点击输入"></div>
         </div> 
         <div>
           <div>身份证号码</div>
           <div><input type="text" name="" v-model="studentIdcard2" placeholder="点击输入"></div>
-        </div> 
+        </div>  -->
         <div>
-          <div>手机号码</div>
+          <div>手机号码2</div>
           <div><input type="tel" name="" v-model="studentPhone2" placeholder="点击输入"></div>
         </div>                           
       </div>
@@ -233,27 +233,15 @@
       validate3(){
         let data = [
           {
-            name: "监护人1姓名",
+            name: "监护人姓名",
             value: this.studentGuardian1,
             type: "Empty"
           },{
-            name: "监护人1身份证",
-            value: this.studentIdcard1,
-            type: "IdCard"
-          },{
-            name: "监护人1手机号",
+            name: "监护人手机号1",
             value: this.studentPhone1,
             type: "Phone"
           },{
-            name: "监护人2姓名",
-            value: this.studentGuardian2,
-            type: "Empty"
-          },{
-            name: "监护人2身份证",
-            value: this.studentIdcard2,
-            type: "IdCard"
-          },{
-            name: "监护人2手机号",
+            name: "监护人手机号2",
             value: this.studentPhone2,
             type: "Phone"
           },
@@ -270,7 +258,7 @@
           studentCreater: this.studentCreater,
           studentGrade: this.studentGrade,
           studentGuardian1: this.studentGuardian1,
-          studentGuardian2: this.studentGuardian2,
+          // studentGuardian2: this.studentGuardian2,
           studentHeader: this.studentHeader,
           studentHealthStatus: HeadlthDataList.indexOf(this.studentHealthStatus),
           studentHealthInfo: this.studentHealthInfo,
@@ -278,8 +266,8 @@
           studentIdcard1: this.studentIdcard1,
           studentIdcard2: this.studentIdcard2,
           studentPhone: this.studentPhone,
-          studentPhone1: this.studentPhone1,
-          studentPhone2: this.studentPhone2,
+          // studentPhone1: this.studentPhone1,
+          // studentPhone2: this.studentPhone2,
           studentRegion: this.studentRegion,
           studentSchool: this.studentSchool,
           studentSex: this.studentSex,

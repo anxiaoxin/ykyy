@@ -210,6 +210,7 @@
         this.pickersType = "studentName";
         if(this.$store.getters.studentNamesList.length == 0) {
           _showTip("暂无孩子信息，请添加");
+          this.$router.push({name: "studentList"});
           return ;
         }
         this.pickData.data1 = this.$store.getters.studentNamesList;
