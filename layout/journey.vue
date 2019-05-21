@@ -1,31 +1,12 @@
 <template>
   <div class="journey-container">
     <div class="journey-tab">
-      <div :class="myJourneyTabClass"  @click="slideTo(0)">我的行程</div>
-      <div :class="panJourneyTabClass"  @click="slideTo(1)">计划行程</div>
+      <div :class="panJourneyTabClass"  @click="slideTo(0)">计划行程</div>
+      <div :class="myJourneyTabClass"  @click="slideTo(1)">我的行程</div>
     </div>
     <div class="journey-content">
       <div class="swiper-container">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="product-list-container">
-                <div v-for="(product, key) in myJourneyProductData" @click="routeToDetail(product)" v-bind:key="key">
-                  <list-item 
-                    :type="'myJourney'"
-                    :imgUrl="product.productInfoBean.productBean.productImage"
-                    :title="product.productInfoBean.productBean.productName"
-                    :category="product.productInfoBean.productBean.productType"
-                    :orderTime="product.productInfoBean.product_info_time"
-                    :journeyState="product.purchase_status"
-                    :orderPrice="product.purchase_money"
-                    :pageBySelf='false'
-                   ></list-item>        
-                </div>
-                <div v-if="myJourneyProductData.length == 0" class="empty-message">
-                  暂无行程
-                </div>                
-              </div>
-            </div>
             <div class="swiper-slide">
               <div class="product-list-container">
                 <div v-for="(product, key) in planJourneyProductData" @click="routeToDetail(product)" v-bind:key="key">
@@ -36,10 +17,30 @@
                     :category="product.productInfoBean.productBean.productType"
                     :orderTime="product.productInfoBean.product_info_time"
                     :orderPrice="product.purchase_money"
+                    :journeyState="product.purchase_pay"
                     :pageBySelf="false"
                    ></list-item>                           
                 </div>
                 <div v-if="planJourneyProductData.length == 0" class="empty-message">
+                  暂无行程
+                </div>                
+              </div>
+            </div>            
+            <div class="swiper-slide">
+              <div class="product-list-container">
+                <div v-for="(product, key) in myJourneyProductData" @click="routeToDetail(product)" v-bind:key="key">
+                  <list-item 
+                    :type="'myJourney'"
+                    :imgUrl="product.productInfoBean.productBean.productImage"
+                    :title="product.productInfoBean.productBean.productName"
+                    :category="product.productInfoBean.productBean.productType"
+                    :orderTime="product.productInfoBean.product_info_time"
+                    :journeyState="product.purchase_pay"
+                    :orderPrice="product.purchase_money"
+                    :pageBySelf='false'
+                   ></list-item>        
+                </div>
+                <div v-if="myJourneyProductData.length == 0" class="empty-message">
                   暂无行程
                 </div>                
               </div>
@@ -64,13 +65,13 @@
       return {
         mySwiper: '',
         activeTab: 0,
-        myJourneyTabClass: 'tab-active',
-        panJourneyTabClass: 'tab-unactive',
+        myJourneyTabClass: 'tab-unactive',
+        panJourneyTabClass: 'tab-active',
       }
     },
     watch: {
       activeTab(){
-        if(this.activeTab === 0){
+        if(this.activeTab === 1){
           this.myJourneyTabClass = 'tab-active';
           this.panJourneyTabClass = 'tab-unactive';
         }else{
@@ -88,6 +89,7 @@
         on: {
           slideChangeTransitionEnd: function(){
             me.activeTab = this.activeIndex;
+            console.log(me.activeTab);
           }
         }        
       })
@@ -108,6 +110,7 @@
     },
     methods: {
       slideTo(to){
+        console.log(to);
         this.mySwiper.slideTo(to, 500, false);
         this.activeTab = to;
       },

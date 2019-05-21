@@ -8,7 +8,7 @@
     <div>
       <div class="product-info-contain">
         <list-item
-          :type="purchaseInfo.productInfoBean.productBean.type"
+          :type="'planJourney'"
           :imgUrl="purchaseInfo.productInfoBean.productBean.productImage"
           :title="purchaseInfo.productInfoBean.productBean.productName"
           :abstract="purchaseInfo.productInfoBean.productBean.productIntroduction"
@@ -19,7 +19,7 @@
           :orderPrice="purchaseInfo.purchase_money"
          ></list-item>
       </div>
-      <div v-if="type==0" class="journey-body">
+      <div v-if="type!=3" class="journey-body">
         <div>
           <span>姓名</span>
           <span>{{purchaseInfo.student_name}}</span>
@@ -53,7 +53,7 @@
           <span></span>
         </div>                       
       </div>
-      <div v-if="type==1" class="journey-body">
+      <div v-if="type==3" class="journey-body">
         <div>
           <span>姓名</span>
           <span>{{purchaseInfo.student_name}}</span>
@@ -110,7 +110,7 @@ export default {
     let purchaseId = this.$route.params.id;
   },
   methods: {
-    pageBack() {
+    pageBack() { 
       if(this.purchaseInfo.purchase_pay !== 0) {
         this.$router.go(-1);
         return ;
@@ -202,10 +202,10 @@ export default {
     },
     type() {
       let st = this.$store.state.purchaseProduct.selectedPurchase;
-      if(st == 2) {
+      if(!st) {
         return 1;
       }else {
-        return 0;
+        return st.purchase_pay;
       }
     }
   }

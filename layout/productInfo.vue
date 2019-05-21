@@ -3,7 +3,7 @@
     <div id="productInfoHead" class="cover_pic">
       <img :src="ServerUrl+productInfo.productImage">
     </div>
-    <div id="productBasic" class="product_basic_info">
+    <!-- <div id="productBasic" class="product_basic_info">
       <div class="product_name">
         {{productInfo.productName}}
       </div>
@@ -16,16 +16,15 @@
           <span>单独购买价：&yen;</span><span id="price_single">{{productInfo.productMoney}}</span>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="course_detail">
       <span v-if="!productInfo.productPath">课程详情图文缺失</span> 
-      <div id="haha"></div>
-      <!-- <iframe v-if="productInfo.productPath" id="myiframe" :src="productInfo.productPath" @load="setFrameHeight" frameborder="0"></iframe> -->
+      <iframe v-if="productInfo.productPath" id="myiframe" :src="productInfo.productPath" frameborder="0"></iframe>
     </div>
     <div id="productFoot" class="course_info_button top-box-shadow">
-      <div class="share_btn right-box-shadow" @click="toShare">分享</div>
-      <div class="buy_single" @click="routeTo('simple')">购买</div>
-      <div class="buy_multi" @click="routeTo('group')">团购</div>
+      <div class="share_btn right-box-shadow">{{'￥' + productInfo.productMoney}}</div>
+      <div class="buy_multi" @click="routeTo('simple')">购买</div>
+      <!-- <div class="buy_multi" @click="routeTo('group')">团购</div> -->
     </div> 
   </div>
 </template>
@@ -44,6 +43,7 @@ export default {
   },
   mounted(){
     let me = this;
+    this.setFrameHeight();
     this.productId = this.$route.params.id;
     if(!this.$store.state.typeProduct.selected.hasOwnProperty("productName")) {
       _utils.getAndCacheSelectedProduct.call(this, {id: this.productId});
@@ -60,7 +60,6 @@ export default {
       _showTip("点击右上角选择分享");
     },
     initShare(data) {
-      $("#haha").load(this.productInfo.productPath);
       let productInfo = productInfo;
       let info = {
         title: data.productBean.product_name,
@@ -77,12 +76,11 @@ export default {
       let productBasic = document.getElementById("productBasic");
       let productFoot = document.getElementById("productFoot");
       let clientHeight = document.documentElement.clientHeight;
-      let clientWdith = document.documentElement.clientWdith;
-      var iframe = document.getElementById("myiframe");
-      let height = clientHeight - head - productBasic - productFoot;
-      console.log(height);
+      let clientWidth = document.documentElement.clientWidth;
+      let iframe = document.getElementById("myiframe");
+      let height = clientHeight - head.offsetHeight - productFoot.offsetHeight;
       iframe.height = height;      
-      iframe.width = clientWdith;
+      iframe.width = clientWidth * 0.9;
     }
   },
   computed: {
@@ -144,8 +142,8 @@ export default {
   line-height:0.746667rem;
   letter-spacing:0.026667rem;
   iframe 
+    margin: 0 auto
     margin-bottom: 1.066667rem
-    width: 90%
     margin-top: 0.5rem
     box-sizing : border-box
 
@@ -165,11 +163,13 @@ export default {
     line-height: 1.066667rem    
     color: #333333
   >.share_btn
-    width: 30%
+    width: 40%
+    font-size : 18px
+    color:rgba(255,122,83,1);
   >.buy_single
-    width: 25%
+    width: 60%
   >.buy_multi
-    width: 45%
+    width: 60%
 
   .buy_multi
     font-size : 16px

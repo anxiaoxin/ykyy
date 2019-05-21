@@ -11,8 +11,8 @@
         :userCouponsId="coupon.userCouponsId"
         :couponsId="coupon.couponsBean.couponsId"
         :status="coupon.status"
-        :selected="selectedCouponId == coupon.couponsBean.couponsId"
-        @click.native="selectCoupon(coupon.couponsId, coupon.couponsBean.couponsMoney)"
+        :selected="selectedCouponId == coupon.userCouponsId"
+        @click.native="selectCoupon(coupon.userCouponsId, coupon.couponsBean.couponsMoney)"
       >
       </coupon>
     </div>

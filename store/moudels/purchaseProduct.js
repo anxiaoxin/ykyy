@@ -28,7 +28,7 @@ const mutations = {
         }else {
           purchaseState.push(item);
         }
-        if(item.purchase_pay === 3) {
+        if(item.purchase_pay === 2) {
           finishedState.push(item);
         }
       })

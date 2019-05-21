@@ -151,6 +151,9 @@
         }
         AddPurchase(params).then(data => {
           if(data.code === 200) {
+            // 更新优惠券
+            _utils.getAndCacheCoupons.call(this, {userId: _utils.getCookie("userId")});
+            
             this.goToPay(params.userId, params.purchaseBean.student_id,
             params.purchaseBean.product_info_id, data.result.purchase_id);      
           }

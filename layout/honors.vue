@@ -8,10 +8,10 @@
     <div class="honors">
       <div v-for="(honor, key) in honorsInfo" v-bind:key="key">
         <div class="honor-list-container">
-          <div class="honor-list-item-time">2018.09.10</div>
+          <div class="honor-list-item-time">{{honor.time}}</div>
           <div class="honor-list-item-body">
             <div class="honor-list-item-type" :class="'category-' + honor.category"></div>
-            <div class="honor-list-item-name">北京-六朝古都</div>
+            <div class="honor-list-item-name">{{honor.name}}</div>
             <div class="honor-list-item-detail" @click="pageTo(key)">查看证书 ></div>
           </div>
         </div>
@@ -59,7 +59,7 @@ export default {
       this.finishedProductData.forEach((item) => {
         honorsInfo.push({
           time: item.purchase_change_time,
-          name: item.productInfoBean.productBean.product_name,
+          name: item.productInfoBean.productBean.productName,
           category: ProductCategory[item.productInfoBean.productBean.product_type],
           studentName: item.student_name
         })

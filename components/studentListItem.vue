@@ -44,10 +44,10 @@
         <div>监护人1</div>
         <div>{{studentGuardian1}}</div>
       </div>                              
-      <div>
+      <!-- <div>
         <div>监护人2</div>
         <div>{{studentGuardian2}}</div>
-      </div> 
+      </div>  -->
       <div>
         <div @click="deleteStudent" class="delete_student">
           删除

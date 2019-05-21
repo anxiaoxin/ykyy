@@ -14,6 +14,7 @@
           :abstract="product.productIntroduction"
           :category="product.productType"
           :productId="product.productId"
+          :productInfo="product"
          ></list-item>        
       </div>
       <div v-if="productData.length !== 0" class="moreProduct">

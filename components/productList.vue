@@ -22,9 +22,8 @@
             <span>{{category}}</span>
           </div>          
           <div class="order-state" v-if="journeyState === 0">
-            <div class="order-state-info">{{orderState}}</div>
-            <div class="order-price">￥{{orderPrice}}</div>
-          </div>
+            <div class="order-price">未支付 ￥{{orderPrice}}</div>
+          </div>                
       </div>
   </div>
 </template>
@@ -107,12 +106,12 @@ secondInfoBottom = 0.2rem
       margin-left: 0.4rem
       .title
         color: rgb(51,51,51)
-        font-size: 14px
+        font-size: 12px
         font-weight: bolder
         margin-bottom: 0.08rem
       .abstract
         color: rgb(128,128,128)
-        font-size: 14px
+        font-size: 12px
         width: 4.773333rem
         overflow: hidden
         white-space: nowrap
