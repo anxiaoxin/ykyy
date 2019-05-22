@@ -42,6 +42,7 @@
           }else {
             LoginByWechat({"code": code}).then(res => {
                 if(res.code === 200){
+                  this.getHomePageProduct();
                   this.showPage = true;
                   _utils.setCookie("uuid",res.result.userBean.user_uuid);
                   _utils.setCookie("userId",res.result.userBean.user_id);
@@ -58,6 +59,7 @@
           }
         }else {
           // 当前已经有用户数据，则显示
+          this.getHomePageProduct();
           this.showPage = true;
         }        
       },
@@ -81,6 +83,11 @@
         if(uid) {
         _utils.setCookie("uid", uid);
         }
+      },
+      getHomePageProduct() {
+        if(this.$store.state.typeProduct.homepage.length === 0)  {
+          _utils.getAndCacheHomeProductList.call(this);
+        }            
       }
     },
     computed: {

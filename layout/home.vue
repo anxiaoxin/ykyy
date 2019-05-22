@@ -53,10 +53,7 @@
       }
     },
     mounted(){
-      let me = this;
-      if(this.$store.state.typeProduct.homepage.length === 0)  {
-        _utils.getAndCacheHomeProductList.call(this);
-      }      
+        
     },    
     methods: {
       changeView(type){
