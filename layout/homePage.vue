@@ -14,6 +14,7 @@
 
   import Foot from '@/components/foot.vue'
   import { HomePageHeadName } from '../utils/constant.js'
+  import { LoginByWechat } from '../utils/http.js'
 
   export default {
     // 组件的名称
@@ -42,9 +43,10 @@
             LoginByWechat({"code": code}).then(res => {
                 if(res.code === 200){
                   this.showPage = true;
-                  _utils.setCookie("uuid",res.result.user_uuid);
-                  _utils.setCookie("userId",res.result.user_id);
-                  let userCache = _utils.changeParamNames(res.result, "ETF");
+                  _utils.setCookie("uuid",res.result.userBean.user_uuid);
+                  _utils.setCookie("userId",res.result.userBean.user_id);
+                  _utils.setCookie("usertn",res.result.token);
+                  let userCache = _utils.changeParamNames(res.result.userBean, "ETF");
                   _utils.setUserCache.call(me, userCache);
                 }else{
                   //  提示失败原因

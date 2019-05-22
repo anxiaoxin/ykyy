@@ -167,9 +167,9 @@ class Utils {
    */
   setCookie(name,value,day){
     // 默认30天
-    day = day || 30;
+    day = day || 5;
     let time = new Date();
-    time.setTime(time.getTime() + day*24*60*60*1000);
+    time.setTime(time.getTime() + day*60*1000);
     document.cookie = name + "=" + escape(value) + ";expires=" + time.toGMTString();
   }
 

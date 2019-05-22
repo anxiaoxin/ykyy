@@ -1,7 +1,8 @@
 import axios from 'axios'
 import Urls from './urls.js'
+import hex_sha1 from './hex_sha1'
 
-axios.defaults.baseURL = "https://www.yikeyiyou.com/server";
+axios.defaults.baseURL = "https://www.yikeyiyou.com/server/";
 // 设置请求拦截器
 axios.interceptors.request.use(
   config => {
@@ -26,12 +27,22 @@ axios.interceptors.response.use(response => {
 // data: {params: {key: value}}
 const commonGet = (url, data, showLoading) => {
   showLoading && (_utils.showMask(showLoading.msg));
+  let config = {};
+  config["headers"] = {
+    "Authorization": _utils.getCookie("usertn"),
+    "Certificate": hex_sha1(url + _utils.getCookie("usertn"))
+  }
   return axios.get(url, {params: data});
 }
 
 // data: {key: value, key: value}
 const commonPost = (url, data, showLoading) => {
   showLoading && (_utils.showMask(showLoading.msg));
+  let config = {};
+  config["headers"] = {
+    "Authorization": _utils.getCookie("usertn"),
+    "Certificate": hex_sha1(url + _utils.getCookie("usertn"))
+  }
   return axios.post(url, data);
 }
 
